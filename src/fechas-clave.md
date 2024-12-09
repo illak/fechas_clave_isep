@@ -108,7 +108,8 @@ Inputs.table(dataConAnios.filter(d => {
       id: id => {
         const propuesta = dataConAnios.filter(d => d.id===id)[0]["Propuesta"];
         //display(propuesta)
-        return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
       }
     },
     layout: "auto",
