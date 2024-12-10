@@ -11,6 +11,7 @@ export default {
        name: "Secciones",
        pages: [
          {name: "Propuestas", path: "/fechas-clave"},
+         {name: "Propuesta activas", path: "/propuestas-activas"},
          {name: "Cursado", path: "/cursado"},
          {name: "Ficha Propuesta", path: "/propuesta-info"},
        ]
