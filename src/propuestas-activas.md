@@ -235,7 +235,9 @@ function drawGantt(data, {width} = {}) {
         x1: (d) => parser(d.startDate),
         x2: (d) => parser(d.endDate),
         title: (d) =>
-          `Tipo: ${d.tipo}\nPropuesta: ${d.propuesta}\nInicio: ${d.startDate}\nFin: ${d.endDate}`
+          `Tipo: ${d.tipo}\nPropuesta: ${d.propuesta}\n\nInicio: ${d.startDate}\nFin: ${d.endDate}`,
+        fontSize: 13,
+        lineWidth: 40
       })),
       // Línea vertical para el día actual
       Plot.ruleX([new Date()], { stroke: "red", strokeWidth: 1.5, strokeDasharray: "4 2" }),

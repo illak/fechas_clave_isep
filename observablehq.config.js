@@ -13,6 +13,7 @@ export default {
          {name: "Propuestas", path: "/fechas-clave"},
          {name: "Propuesta activas", path: "/propuestas-activas"},
          {name: "Cursado", path: "/cursado"},
+         {name: "Cursado IFDA", path: "/cursado-ifda"},
          {name: "Ficha Propuesta", path: "/propuesta-info"},
        ]
      }
