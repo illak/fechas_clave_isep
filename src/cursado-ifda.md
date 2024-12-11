@@ -261,7 +261,7 @@ Inputs.table(dataConAnios.filter(d => {
     },
     layout: "auto",
     rows: 30,
-    height: 600,
+    height: 450,
     width: "auto",  
 })
 
