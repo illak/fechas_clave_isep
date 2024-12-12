@@ -23,6 +23,11 @@ const data = await getTsv(url);
 ```
 
 ```js
+// Fecha actual
+const hoy = new Date();                 
+// Normalizar la fecha actual al formato "YYYY-MM-DD" (ignorando horas)
+const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+
 const dataConAnios = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
@@ -36,8 +41,28 @@ const dataConAnios = data.filter(d => {
     ? new Date(d["Inicio de cursado"].split("/").reverse().join("-"))
     : null;
 
+  const fecha_f = d["Cierre de cursado"]
+    ? new Date(d["Cierre de cursado"].split("/").reverse().join("-"))
+    : null;
 
   const options = { month: "long" };
+
+  const status = (() => {
+    if (hoySinHora <= fecha_f && hoySinHora >= fecha) {
+      return "Cursando";
+    } else if (hoySinHora < fecha) {
+      return "Pendiente";
+    } else if (hoySinHora > fecha_f) {
+      return "Finalizado";
+    }
+  })();
+
+  const tipo_ed = (() => {
+    if(d["Momento en el que se ofrece"] === "Cursado" && d["¿Se ofrece para recursadas?"]==="TRUE"){
+      return "Cursado con instancias de recursado";
+    }
+    return d["Momento en el que se ofrece"];
+  })();
   
   // Retornar una nueva fila con una columna adicional "año"
   return {
@@ -45,7 +70,9 @@ const dataConAnios = data.filter(d => {
     anio: fecha ? fecha.getFullYear() : null, // Agregar el año como una nueva clave
     mes: new Intl.DateTimeFormat("es-Es", options).format(fecha),
     mes_idx: fecha.getMonth(),
-    semestre: fecha.getMonth() < 6? "Primer semestre" : "Segundo semestre"
+    semestre: fecha.getMonth() < 6? "Primer semestre" : "Segundo semestre",
+    estado: status,
+    tipo_ed: tipo_ed
   };
 });
 
@@ -88,6 +115,20 @@ const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre
 
 ```
 
+```js
+function wrapText(x, w) {
+  return htl.html`<div style="
+      text-align: center;
+      font: 12px/1.6 var(--sans-serif);
+      color: black;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 4px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</div>`
+}
+```
+
 
 ```js
 
@@ -109,13 +150,17 @@ Inputs.table(dataConAnios.filter(d => {
       "Propuesta",
       "Inicio de cursado",
       "Cierre de cursado",
-      "Momento en el que se ofrece"
+      "tipo_ed"
     ],
     header: {
       "Nombre del módulo": "Cursado de",
       "Criterio de carga": "Tipología",
       "Propuesta": "Propuesta formativa",
-      "Momento en el que se ofrece": "Tipo de edición"
+      "tipo_ed": "Tipo de edición"
+    },
+    format: {
+      "Nombre del módulo": (d) => wrapText(d,150),
+      "Propuesta": (d) => wrapText(d,220),
     },
     layout: "auto",
     rows: 30,

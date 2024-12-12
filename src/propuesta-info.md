@@ -25,7 +25,7 @@ const id = params.get('id');
 ```
 
 ```js
-display(propuesta_data)
+//display(propuesta_data)
 ```
 
 
@@ -119,6 +119,7 @@ const link = propuesta_data["Documento de la propuesta"];
 </div>
 
 
+<!-- 
 <div class="grid grid-cols-2">
   <div class="card">
 
@@ -129,6 +130,7 @@ const link = propuesta_data["Documento de la propuesta"];
   </div>
 </div>
 
+--> 
 
 
 

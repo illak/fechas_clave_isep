@@ -92,7 +92,6 @@ const dataConAnios = data.filter(d => {
   }
   
   const status = (() => {
-    console.log(hoySinHora, " --- ", fecha_f);
     if (hoySinHora <= fecha_f && hoySinHora >= fecha) {
       return "Cursando";
     } else if (hoySinHora < fecha) {
@@ -102,7 +101,12 @@ const dataConAnios = data.filter(d => {
     }
   })();
 
-console.log(status)
+  const tipo_ed = (() => {
+    if(d["Momento en el que se ofrece"] === "Cursado" && d["¿Se ofrece para recursadas?"]){
+      return "Cursado con instancias de recursado";
+    }
+    return d["Momento en el que se ofrece"];
+  })();
 
   // Retornar una nueva fila con una columna adicional "año"
   return {
@@ -112,7 +116,8 @@ console.log(status)
     mes_idx: fecha.getMonth(),
     semestre: fecha.getMonth() < 6? "Primer semestre" : "Segundo semestre",
     ifdas: ifdas,
-    estado: status
+    estado: status,
+    tipo_ed: tipo_ed
   };
 });
 
@@ -190,7 +195,7 @@ function centerText(x, ifda="-") {
 }
 
 
-function wrapText(x) {
+function wrapText(x, w) {
   return htl.html`<div style="
       text-align: center;
       font: 12px/1.6 var(--sans-serif);
@@ -199,76 +204,25 @@ function wrapText(x) {
       overflow-wrap: break-word;
       white-space: normal;
       padding: 4px;
-      width: 250px;">${x.toLocaleString("en-US")}</div>`
+      width: ${w}px;">${x.toLocaleString("en-US")}</div>`
 }
 ```
 
 ```js
-function getIFDAPanel(){
-  
-  return htl.html`
-      <div>
+function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
+  if(ifdas===ifda || d3.sum(ifda_sel, (d) => d[ifda]) > 0){
+    return htl.html`<div>
+        <div class="card" style="background-color:#EDE4C5;">
+          <h4>${ifda}</h4>  ${d3.sum(ifda_sel, (d) => d[ifda])}
+        </div>`
+  }
+  return htl.html`<div>
         <div class="card">
-          <h2>Simón Bolivar</h2>  ${d3.sum(filterIFDA, (d) => d["Simón Bolivar"])}
-        </div>
-        <div class="card">
-          <h2>Carbó</h2>  ${d3.sum(filterIFDA, (d) => d["Carbó"])}
-        </div>
-        <div class="card">
-          <h2>Leguizamón</h2>  ${d3.sum(filterIFDA, (d) => d["Leguizamón"])}
-        </div>
-        <div class="card">
-          <h2>Agulla</h2>  ${d3.sum(filterIFDA, (d) => d["Agulla"])}
-        </div>
-        <div class="card">
-          <h2>ISEP</h2>  ${d3.sum(filterIFDA, (d) => d["ISEP"])}
-        </div>
-      </div>
-      <div>
-        <div class="card">
-          <h2>ISPT</h2>  ${d3.sum(filterIFDA, (d) => d["ISPT"])}
-        </div>
-        <div class="card">
-          <h2>Trettel</h2>  ${d3.sum(filterIFDA, (d) => d["Trettel"])}
-        </div>
-        <div class="card">
-          <h2>Zípoli</h2>  ${d3.sum(filterIFDA, (d) => d["Zípoli"])}
-        </div>
-        <div class="card">
-          <h2>Carena</h2>  ${d3.sum(filterIFDA, (d) => d["Carena"])}
-        </div>
-        <div class="card">
-          <h2>Urquiza</h2>  ${d3.sum(filterIFDA, (d) => d["Urquiza"])}
-        </div>
-      </div>
-      <div>
-        <div class="card">
-          <h2>Iescer</h2>  ${d3.sum(filterIFDA, (d) => d["Iescer"])}
-        </div>
-        <div class="card">
-          <h2>Houssay</h2>  ${d3.sum(filterIFDA, (d) => d["Houssay"])}
-        </div>
-        <div class="card">
-          <h2>San Martín</h2>  ${d3.sum(filterIFDA, (d) => d["San Martín"])}
-        </div>
-        <div class="card">
-          <h2>Lefebvre</h2>  ${d3.sum(filterIFDA, (d) => d["Lefebvre"])}
-        </div>
-        <div class="card">
-          <h2>Castro</h2>  ${d3.sum(filterIFDA, (d) => d["Castro"])}
-        </div>
-      </div>
-    </div>
-      <div>
-        <div class="card">
-          <h2>Menéndez Pidal</h2>  ${d3.sum(filterIFDA, (d) => d["Menéndez Pidal"])}
-        </div>
-      </div>`
+          <h2>${ifda}</h2>  ${d3.sum(ifda_sel, (d) => d[ifda])}
+        </div>`
 }
 ```
 ```js
-
-
 const filterIFDA = dataConAnios.filter(d => {
       // Filtrar dinámicamente según los valores de `anios` y `mes`
       const filtrarPorAnio = anios ? d["anio"] === anios : true;
@@ -286,10 +240,10 @@ const filterIFDA = dataConAnios.filter(d => {
 
 
 <div class="grid grid-cols-3">
-  <div class="card grid-colspan-2" style="text-align:left;">
+  <div class="card grid-colspan-2">
 
 ```js
-Inputs.table(dataConAnios.filter(d => {
+const selects = view(Inputs.table(dataConAnios.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
@@ -303,109 +257,72 @@ Inputs.table(dataConAnios.filter(d => {
   
   }), {
     columns: [
+      "id",
       "Propuesta",
       "Nombre del módulo",
       "Cohorte",
       "Inicio de cursado",
       "Cierre de cursado",
       "TOTAL DE AULAS",
-    ],
-    header: {
-      "Nombre del módulo": "Cursado de",
-      "Criterio de carga": "Tipología",
-      "Propuesta": "Propuesta formativa",
-      "Momento en el que se ofrece": "Tipo de edición"
-    },
-    format: {
-        "Propuesta": (d) => wrapText(d),
-        "Nombre del módulo": (d) => wrapText(d),
-        //"Inicio de cursado": (d) => wrapText(d),
-        //"Cierre de cursado": (d) => wrapText(d),
-        "TOTAL DE AULAS": (d) => centerText(d),
-    },
-    layout: "auto",
-    rows: 30,
-    height: 450,
-    width: "auto",  
-})
-```
-  </div>
-  <div>
-    <div class="grid grid-cols-3">
-      ${getIFDAPanel()}
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-```js
-
-
-Inputs.table(dataConAnios.filter(d => {
-    // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
-    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-    const filtrarPosEstado = status ? d["estado"] === status : true;
-
-    // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
-  
-  }), {
-    columns: [
-      "Propuesta",
-      "Nombre del módulo",
-      "Cohorte",
-      "Inicio de cursado",
-      "Cierre de cursado",
-      "TOTAL DE AULAS",
-      ...ifdas_l
     ],
     header: {
       "Nombre del módulo": "Cursado de",
       "Criterio de carga": "Tipología",
       "Propuesta": "Propuesta formativa",
       "Momento en el que se ofrece": "Tipo de edición",
-      "Iescer": "IESCER"
+      "TOTAL DE AULAS": "# Aulas",
     },
     format: {
-        "Propuesta": (d) => wrapText(d),
-        "Nombre del módulo": (d) => wrapText(d),
+        "Propuesta": (d) => wrapText(d,250),
+        "Nombre del módulo": (d) => wrapText(d,150),
         "Inicio de cursado": (d) => wrapText(d),
         "Cierre de cursado": (d) => wrapText(d),
         "TOTAL DE AULAS": (d) => centerText(d),
-        "Simón Bolivar": (d) => centerText(d, "Simón Bolivar"),
-        "Carbó": (d) => centerText(d, "Carbó"),
-        "Leguizamón": (d) => centerText(d, "Leguizamón"),
-        "Agulla": (d) => centerText(d, "Agulla"),
-        "ISEP": (d) => centerText(d, "ISEP"),
-        "ISPT": (d) => centerText(d, "ISPT"),
-        "Trettel": (d) => centerText(d, "Trettel"),
-        "Zípoli": (d) => centerText(d, "Zípoli"),
-        "Carena": (d) => centerText(d, "Carena"),
-        "Urquiza": (d) => centerText(d, "Urquiza"),
-        "Iescer": (d) => centerText(d, "Iescer"),
-        "Houssay": (d) => centerText(d, "Houssay"),
-        "San Martín":(d) => centerText(d, "San Martín"),
-        "Lefebvre": (d) => centerText(d, "Lefebvre"),
-        "Castro": (d) => centerText(d, "Castro"),
-        "Menéndez Pidal": (d) => centerText(d, "Menéndez Pidal")
     },
     layout: "auto",
     rows: 30,
-    height: 450,
+    height: 580,
     width: "auto",  
-})
-
-
+}))
 ```
+  </div>
+  <div>
+      <div class="rectangulo">
+        Capital
+      </div>
+      <div class="grid grid-cols-4 contenedor-tarjetas">
+        ${getIFDAPanel("Simón Bolivar", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Carbó", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Leguizamón", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Agulla", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("ISEP", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("ISPT", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Trettel", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Zípoli", selects_l, ifdas, num_selected)}
+      </div>
+      <div class="rectangulo">
+        Interior
+      </div>
+      <div class="grid grid-cols-4 contenedor-tarjetas">
+        ${getIFDAPanel("Carena", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Urquiza", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Houssay", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("San Martín", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Iescer", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Lefebvre", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Castro", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Menéndez Pidal", selects_l, ifdas, num_selected)}
+      </div>
+    </div>
+  </div>
+</div>
 
+
+```js
+const ids = selects.map(d => d.id);
+const selects_l = filterIFDA.filter(d => ids.includes(d.id));
+const num_selected = ids.length;
+```
 
 ```js
 const settings = {
@@ -564,7 +481,7 @@ function drawGantt(data, {width} = {}) {
       tickSize: null,
       grid: (settings.gridlines == "y") | (settings.gridlines == "both") ? true : null
     },
-    color: { scheme: "tableau10" }
+    color: { scheme: "tableau10", legend: true }
   })
 };
 
@@ -576,6 +493,68 @@ function drawGantt(data, {width} = {}) {
 </div>
 
 
+Versión original (se reemplazó por la de más arriba)
+```js
+Inputs.table(dataConAnios.filter(d => {
+    // Filtrar dinámicamente según los valores de `anios` y `mes`
+    const filtrarPorAnio = anios ? d["anio"] === anios : true;
+    const filtrarPorMes = mes ? d["mes"] === mes : true;
+    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
+    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
+    const filtrarPosEstado = status ? d["estado"] === status : true;
+
+    // Retornar solo las filas que cumplen con los filtros activos
+    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
+  
+  }), {
+    columns: [
+      "Propuesta",
+      "Nombre del módulo",
+      "Cohorte",
+      "Inicio de cursado",
+      "Cierre de cursado",
+      "TOTAL DE AULAS",
+      ...ifdas_l
+    ],
+    header: {
+      "Nombre del módulo": "Cursado de",
+      "Criterio de carga": "Tipología",
+      "Propuesta": "Propuesta formativa",
+      "Momento en el que se ofrece": "Tipo de edición",
+      "Iescer": "IESCER"
+    },
+    format: {
+        "Propuesta": (d) => wrapText(d),
+        "Nombre del módulo": (d) => wrapText(d),
+        "Inicio de cursado": (d) => wrapText(d),
+        "Cierre de cursado": (d) => wrapText(d),
+        "TOTAL DE AULAS": (d) => centerText(d),
+        "Simón Bolivar": (d) => centerText(d, "Simón Bolivar"),
+        "Carbó": (d) => centerText(d, "Carbó"),
+        "Leguizamón": (d) => centerText(d, "Leguizamón"),
+        "Agulla": (d) => centerText(d, "Agulla"),
+        "ISEP": (d) => centerText(d, "ISEP"),
+        "ISPT": (d) => centerText(d, "ISPT"),
+        "Trettel": (d) => centerText(d, "Trettel"),
+        "Zípoli": (d) => centerText(d, "Zípoli"),
+        "Carena": (d) => centerText(d, "Carena"),
+        "Urquiza": (d) => centerText(d, "Urquiza"),
+        "Iescer": (d) => centerText(d, "Iescer"),
+        "Houssay": (d) => centerText(d, "Houssay"),
+        "San Martín":(d) => centerText(d, "San Martín"),
+        "Lefebvre": (d) => centerText(d, "Lefebvre"),
+        "Castro": (d) => centerText(d, "Castro"),
+        "Menéndez Pidal": (d) => centerText(d, "Menéndez Pidal")
+    },
+    layout: "auto",
+    rows: 30,
+    height: 450,
+    width: "auto",  
+})
+
+
+```
 
 
 <style>
@@ -597,4 +576,31 @@ thead {
   background-color: "#4287f5"; /* Opcional: Fondo para encabezado */
 }
 
+.card1 {
+  background-color: "#4287f5";
+}
+
+.wrap-header{
+    width: 150px; /* Ajusta el ancho según sea necesario */
+    word-wrap: break-word; /* Permite que las palabras se partan */
+    white-space: normal; /* Permite que el texto use varias líneas */
+    text-align: center; /* Opcional, para centrar el texto */
+}
+
+.rectangulo {
+    width: 100%; /* Extiende el rectángulo al ancho completo del contenedor */
+    background-color: #333; /* Fondo gris oscuro */
+    color: white; /* Texto blanco */
+    text-align: center; /* Centra el texto horizontalmente */
+    padding: 2px; /* Espaciado interno */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    font-size: 20px; /* Tamaño del texto */
+    margin-bottom: 10px; /* Espaciado entre los rectángulos */
+    border-radius: 10px; /* Esquinas redondeadas */
+}
+
+.contenedor-tarjetas {
+    display: grid;
+    gap: 5px; /* Reduce el espacio entre las tarjetas */
+}
 </style>
