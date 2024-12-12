@@ -222,6 +222,7 @@ function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
         </div>`
 }
 ```
+
 ```js
 const filterIFDA = dataConAnios.filter(d => {
       // Filtrar dinámicamente según los valores de `anios` y `mes`

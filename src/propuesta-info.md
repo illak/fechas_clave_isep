@@ -25,7 +25,7 @@ const id = params.get('id');
 ```
 
 ```js
-//display(propuesta_data)
+display(propuesta_data)
 ```
 
 
