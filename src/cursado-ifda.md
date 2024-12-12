@@ -199,9 +199,147 @@ function wrapText(x) {
       overflow-wrap: break-word;
       white-space: normal;
       padding: 4px;
-      width: 160px;">${x.toLocaleString("en-US")}</div>`
+      width: 250px;">${x.toLocaleString("en-US")}</div>`
 }
 ```
+
+```js
+function getIFDAPanel(){
+  
+  return htl.html`
+      <div>
+        <div class="card">
+          <h2>Simón Bolivar</h2>  ${d3.sum(filterIFDA, (d) => d["Simón Bolivar"])}
+        </div>
+        <div class="card">
+          <h2>Carbó</h2>  ${d3.sum(filterIFDA, (d) => d["Carbó"])}
+        </div>
+        <div class="card">
+          <h2>Leguizamón</h2>  ${d3.sum(filterIFDA, (d) => d["Leguizamón"])}
+        </div>
+        <div class="card">
+          <h2>Agulla</h2>  ${d3.sum(filterIFDA, (d) => d["Agulla"])}
+        </div>
+        <div class="card">
+          <h2>ISEP</h2>  ${d3.sum(filterIFDA, (d) => d["ISEP"])}
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h2>ISPT</h2>  ${d3.sum(filterIFDA, (d) => d["ISPT"])}
+        </div>
+        <div class="card">
+          <h2>Trettel</h2>  ${d3.sum(filterIFDA, (d) => d["Trettel"])}
+        </div>
+        <div class="card">
+          <h2>Zípoli</h2>  ${d3.sum(filterIFDA, (d) => d["Zípoli"])}
+        </div>
+        <div class="card">
+          <h2>Carena</h2>  ${d3.sum(filterIFDA, (d) => d["Carena"])}
+        </div>
+        <div class="card">
+          <h2>Urquiza</h2>  ${d3.sum(filterIFDA, (d) => d["Urquiza"])}
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h2>Iescer</h2>  ${d3.sum(filterIFDA, (d) => d["Iescer"])}
+        </div>
+        <div class="card">
+          <h2>Houssay</h2>  ${d3.sum(filterIFDA, (d) => d["Houssay"])}
+        </div>
+        <div class="card">
+          <h2>San Martín</h2>  ${d3.sum(filterIFDA, (d) => d["San Martín"])}
+        </div>
+        <div class="card">
+          <h2>Lefebvre</h2>  ${d3.sum(filterIFDA, (d) => d["Lefebvre"])}
+        </div>
+        <div class="card">
+          <h2>Castro</h2>  ${d3.sum(filterIFDA, (d) => d["Castro"])}
+        </div>
+      </div>
+    </div>
+      <div>
+        <div class="card">
+          <h2>Menéndez Pidal</h2>  ${d3.sum(filterIFDA, (d) => d["Menéndez Pidal"])}
+        </div>
+      </div>`
+}
+```
+```js
+
+
+const filterIFDA = dataConAnios.filter(d => {
+      // Filtrar dinámicamente según los valores de `anios` y `mes`
+      const filtrarPorAnio = anios ? d["anio"] === anios : true;
+      const filtrarPorMes = mes ? d["mes"] === mes : true;
+      const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
+      const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+      const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
+      const filtrarPosEstado = status ? d["estado"] === status : true;
+
+      // Retornar solo las filas que cumplen con los filtros activos
+      return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
+  });
+
+```
+
+
+<div class="grid grid-cols-3">
+  <div class="card grid-colspan-2" style="text-align:left;">
+
+```js
+Inputs.table(dataConAnios.filter(d => {
+    // Filtrar dinámicamente según los valores de `anios` y `mes`
+    const filtrarPorAnio = anios ? d["anio"] === anios : true;
+    const filtrarPorMes = mes ? d["mes"] === mes : true;
+    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
+    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
+    const filtrarPosEstado = status ? d["estado"] === status : true;
+
+    // Retornar solo las filas que cumplen con los filtros activos
+    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
+  
+  }), {
+    columns: [
+      "Propuesta",
+      "Nombre del módulo",
+      "Cohorte",
+      "Inicio de cursado",
+      "Cierre de cursado",
+      "TOTAL DE AULAS",
+    ],
+    header: {
+      "Nombre del módulo": "Cursado de",
+      "Criterio de carga": "Tipología",
+      "Propuesta": "Propuesta formativa",
+      "Momento en el que se ofrece": "Tipo de edición"
+    },
+    format: {
+        "Propuesta": (d) => wrapText(d),
+        "Nombre del módulo": (d) => wrapText(d),
+        //"Inicio de cursado": (d) => wrapText(d),
+        //"Cierre de cursado": (d) => wrapText(d),
+        "TOTAL DE AULAS": (d) => centerText(d),
+    },
+    layout: "auto",
+    rows: 30,
+    height: 450,
+    width: "auto",  
+})
+```
+  </div>
+  <div>
+    <div class="grid grid-cols-3">
+      ${getIFDAPanel()}
+    </div>
+  </div>
+</div>
+
+
+
+
 
 
 ```js
