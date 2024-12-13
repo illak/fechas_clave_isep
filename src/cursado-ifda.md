@@ -231,10 +231,10 @@ const filterIFDA = dataConAnios.filter(d => {
       const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
       const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
       const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-      const filtrarPosEstado = status ? d["estado"] === status : true;
+      const filtrarPorEstado = status ? d["estado"] === status : true;
 
       // Retornar solo las filas que cumplen con los filtros activos
-      return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
+      return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
   });
 
 ```

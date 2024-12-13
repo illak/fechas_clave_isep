@@ -28,6 +28,8 @@ const hoy = new Date();
 // Normalizar la fecha actual al formato "YYYY-MM-DD" (ignorando horas)
 const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 
+const status_l = ["Pendiente", "Cursando", "Finalizado"];
+
 const dataConAnios = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
@@ -102,7 +104,9 @@ const mes_a = Array.from(new Set(meses)).filter(Boolean);
 const semestres = dataConAnios.map(d => d["semestre"]);
 const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 
-const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
+
+
+const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
 
 const anios = view(Inputs.select([null].concat(anios_a), {
     label: "Año",
@@ -112,6 +116,8 @@ const anios = view(Inputs.select([null].concat(anios_a), {
 const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
 const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));
+
+const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
 
 ```
 
@@ -139,9 +145,10 @@ Inputs.table(dataConAnios.filter(d => {
     const filtrarPorMes = mes ? d["mes"] === mes : true;
     const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
     const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorEstado = status ? d["estado"] === status : true;
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta;
+    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
   
   }), {
     columns: [
@@ -216,9 +223,10 @@ const uc_gantt_data = dataConAnios.filter(d => {
     const filtrarPorMes = mes ? d["mes"] === mes : true;
     const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
     const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorEstado = status ? d["estado"] === status : true;
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta;
+    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
   
   }).map(d => {
 
