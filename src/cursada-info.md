@@ -134,7 +134,7 @@ const cursada_data = data.filter(d => {
 
 ```js
 const cursada_data_id = cursada_data.filter(d => {
-    return d["id"] === "2";  
+    return d["id"] === id;  
   })[0];
 
 const link = cursada_data_id["Documento de la propuesta"];
