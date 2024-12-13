@@ -35,8 +35,6 @@ function getLink(text, link){
   return ""
 }
 
-
-
 function getIFDAPanel(ifda, val){
   console.log(ifda, "---", val)
   if(val){
@@ -49,7 +47,7 @@ function getIFDAPanel(ifda, val){
 
 function getIFDAS(ifdas){
   Object.entries(ifdas).forEach(([key, value]) => {
-    getIFDAPanel(key, value);
+    display(getIFDAPanel(key, value));
   });
 }
 
@@ -190,20 +188,26 @@ const link = cursada_data_id["Documento de la propuesta"];
 
 <div class="card" style="background-color: white;">
   <h1>Cantidad de aulas por IFDA</h1>
-  <div class="grid grid-cols-4" style="text-align:center;grid-auto-rows: auto;">
+  
+```js
+  // El secreto está en cómo "interpola" ${} y el renderizado final!
+  display(html`<div class="grid grid-cols-3" style="text-align:center;grid-auto-rows: auto;">
+    ${Object.entries(filtered).map(([key, value]) => getIFDAPanel(key, value))}
+    </div>`)
 
-  </div>
+```
+
 </div>
 
 
 
 ```js
-const filtered = Object.entries(cursada_data_id["ifdas"])
+// Nos quedamos con los IFDA que tienen valor, ordenamos según este valor de mayor a menor
+const filtered = Object.fromEntries(
+  Object.entries(cursada_data_id["ifdas"])
     .filter(([key, value]) => value > 0)
-    .reduce((acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-    }, {});
+    .sort(([, valueA], [, valueB]) => valueB - valueA) // Ordenar de mayor a menor
+);
 ```
 
 <style>

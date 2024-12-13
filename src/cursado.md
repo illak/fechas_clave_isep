@@ -145,7 +145,7 @@ Inputs.table(dataConAnios.filter(d => {
   
   }), {
     columns: [
-      "Nombre del módulo",
+      "id",
       "Criterio de carga",
       "Propuesta",
       "Inicio de cursado",
@@ -153,14 +153,20 @@ Inputs.table(dataConAnios.filter(d => {
       "tipo_ed"
     ],
     header: {
-      "Nombre del módulo": "Cursado de",
+      "id": "Cursado de",
       "Criterio de carga": "Tipología",
       "Propuesta": "Propuesta formativa",
       "tipo_ed": "Tipo de edición"
     },
     format: {
-      "Nombre del módulo": (d) => wrapText(d,150),
-      "Propuesta": (d) => wrapText(d,220),
+      "Propuesta": (d) => wrapText(d, 220),
+      //"id": (d) => wrapText(d,220),
+      id: id => {
+        const uc = dataConAnios.filter(d => d.id===id)[0]["Nombre del módulo"];
+        //display(propuesta)
+        //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
+      }
     },
     layout: "auto",
     rows: 30,
