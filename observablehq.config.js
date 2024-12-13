@@ -14,7 +14,6 @@ export default {
          {name: "Propuesta activas", path: "/propuestas-activas"},
          {name: "Cursado", path: "/cursado"},
          {name: "Cursado IFDA", path: "/cursado-ifda"},
-         {name: "Ficha Cursada", path: "/cursada-info"},
          {name: "Ficha Propuesta", path: "/propuesta-info"},
        ]
      }
