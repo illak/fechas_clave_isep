@@ -39,7 +39,7 @@ function getIFDAPanel(ifda, val){
   console.log(ifda, "---", val)
   if(val){
     return html`<div class="card">
-          <h2>${ifda}</h2> ${val}
+          <h2><b>${ifda}</b></h2> <div style="font-size:18px;">${val}</div>
         </div>`
   }
   
@@ -134,7 +134,10 @@ const cursada_data = data.filter(d => {
 
 ```js
 const cursada_data_id = cursada_data.filter(d => {
-    return d["id"] === id;  
+    if(id){
+      return d["id"] === id;
+    }
+    return d["id"] === "2";
   })[0];
 
 const link = cursada_data_id["Documento de la propuesta"];
