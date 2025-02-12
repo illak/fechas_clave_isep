@@ -55,8 +55,8 @@ const dataConAnios = data.filter(d => {
     ...d, // Mantener las columnas existentes
     anio: fecha ? fecha.getFullYear() : null, // Agregar el año como una nueva clave
     mes: new Intl.DateTimeFormat("es-Es", options).format(fecha),
-    mes_idx: fecha.getMonth(),
-    finaliza_este_anio: fecha_fin.getFullYear() === current_year
+    mes_idx: fecha ? fecha.getMonth() : null,
+    finaliza_este_anio: fecha_fin === null ? "fecha fin sin definir!" :  fecha_fin.getFullYear() === current_year
   };
 });
 ```
@@ -76,7 +76,9 @@ const anios_a = Array.from(
   }).filter(Boolean))).sort();
 
 const meses = dataConAnios.map(d => ({mes: d["mes"], idx: d["mes_idx"]})).sort((a, b) => a.idx - b.idx).map(d => d["mes"]);
+meses
 const mes_a = Array.from(new Set(meses)).filter(Boolean) ;
+
 
 
 const anios = view(Inputs.select([null].concat(anios_a), {
@@ -89,6 +91,9 @@ const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 const finaliza_check = view(Inputs.toggle({label: "Finaliza este año"}));
 ```
 
+```js
+meses
+```
 
 ```js
 Inputs.table(dataConAnios.filter(d => {
@@ -131,7 +136,7 @@ Inputs.table(dataConAnios.filter(d => {
 
 ```js
 const settings = {
-      plotHeight: 600,
+      plotHeight: 900,
       plotWidth: 900,
       barHeight: 12,
       textPosition: 0,
