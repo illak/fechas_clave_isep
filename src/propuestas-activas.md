@@ -91,9 +91,6 @@ const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 const finaliza_check = view(Inputs.toggle({label: "Finaliza este año"}));
 ```
 
-```js
-meses
-```
 
 ```js
 Inputs.table(dataConAnios.filter(d => {
