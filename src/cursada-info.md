@@ -4,7 +4,7 @@ theme: air
 ---
 
 <div style="text-align: center;">
-  <img src="./banner.png" alt="Banner Alt Text" style="width: 100%; max-width: 1200px; height: auto; border-radius: 10px;">
+  <img src="./info-cursada.png" alt="Banner Alt Text" style="width: 100%; max-width: 1200px; height: auto; border-radius: 10px;">
 </div>
 
 ```js

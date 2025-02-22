@@ -4,7 +4,7 @@ theme: air
 ---
 
 <div style="text-align: center;">
-  <img src="./banner.png" alt="Banner Alt Text" style="width: 100%; max-width: 1200px; height: auto; border-radius: 10px;">
+  <img src="./encabezado-propuesta.png" alt="Banner Alt Text" style="width: 100%; max-width: 1200px; height: auto; border-radius: 10px;">
 </div>
 
 ```js
@@ -100,6 +100,15 @@ const link = propuesta_data["Documento de la propuesta"];
   </div>
 </div>
 
+<div class="card" style="background-color: white;">
+  <h1>Fechas de cursado</h1>
+  <div class="grid grid-cols-2" style="text-align:center;">
+    <div class="card"><h1>Fecha de inicio de cursado</h1><h1>${propuesta_data["Inicio de la propuesta"]}</h1></div>
+    <div class="card"><h1>Fecha de cierre de cursado</h1><h1>${propuesta_data["Fin de la propuesta"]}</h1></div>
+  </div>
+</div>
+
+
 <br>
 <div class="card" style="background-color: white;">
   <h1>Información sobre el cupo</h1>
@@ -110,13 +119,6 @@ const link = propuesta_data["Documento de la propuesta"];
 </div>
 
 <br>
-<div class="card" style="background-color: white;">
-  <h1>Fechas de cursado</h1>
-  <div class="grid grid-cols-2" style="text-align:center;">
-    <div class="card"><h1>Fecha de inicio de cursado</h1><h1>${propuesta_data["Inicio de cursado"]}</h1></div>
-    <div class="card"><h1>Fecha de cierre de cursado</h1><h1>${propuesta_data["Cierre de cursado"]}</h1></div>
-  </div>
-</div>
 
 
 <!-- 

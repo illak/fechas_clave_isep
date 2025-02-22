@@ -6,6 +6,7 @@ toc: false
 
 <div class="hero">
   <h1>Fechas clave: Cursado por IFDA</h1>
+  Acá podrás conocer las propuestas distribuidas por IFDA y la cantidad de aulas vigentes en cada caso.
 </div>
 
 
@@ -122,9 +123,6 @@ const dataConAnios = data.filter(d => {
 });
 
 ```
-
-
-<h2>Inicio del cursado</h2>
 
 ```js
 
@@ -431,8 +429,8 @@ function drawGantt(data, {width} = {}) {
         x2: (d) => d.endDate,
         fill: "tipo",
         rx: settings.barRoundness,
-        insetTop: settings.barHeight,
-        insetBottom: settings.barHeight
+        //insetTop: settings.barHeight,
+        //insetBottom: settings.barHeight
       }),
       Plot.text(data, {
         y: "id",

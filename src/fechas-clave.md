@@ -1,12 +1,13 @@
 ---
 theme: [dashboard, light]
-title: Propuestas
+title: Inscripciones
 toc: false
 ---
 
 
 <div class="hero">
-  <h1>Fechas clave: Propuestas</h1>
+  <h1>Inscripciones: Períodos y Propuestas</h1>
+  En esta sección, podrás consultar en qué períodos tuvimos prematriculaciones y para qué propuestas. Podés usar los filtros de año y mes -que corresponden a las fechas de inscripción (no de cursado)- o de tipo de inscripción. También tenés disponible el buscador por palabra clave para indagar los datos de prematriculación de una propuesta específica. 
 </div>
 
 <!-- Load and transform the data -->
@@ -55,8 +56,6 @@ const dataConAnios = data.filter(d => {
 ```
 
 
-<h2>Inscripción: inicio</h2>
-
 ```js
 
 const anios_a = Array.from(
@@ -80,20 +79,53 @@ const anios = view(Inputs.select([null].concat(anios_a), {
 
 const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
+const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo de inscripción"}));
+
+const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…"}));
 
 ```
 
+<div>
+A continuación, podrás observar algunos datos de la prematriculación del período o propuesta/s seleccionada/s. Haciendo clic en cada propuesta, verás todos los datos de su prematriculación:
+</div>
+
+```js
+function wrapText(x, w) {
+  return htl.html`<div style="
+      text-align: center;
+      font: 12px/1.6 var(--sans-serif);
+      color: black;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 4px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</div>`
+}
+
+function wrapTextLink(x, w, href) {
+  return htl.html`<a href=${href}
+      target=_blank
+      style=" display: block;
+      text-align: center;
+      font: 12px/1.6 var(--sans-serif);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 1px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</a>`
+}
+```
 
 ```js
 
-
-Inputs.table(dataConAnios.filter(d => {
+Inputs.table(search.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
+    const filtrarPorTipo = tipo_insc ? d["propuesta: Tipo de inscripción"] === tipo_insc : true;
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes;
+    return filtrarPorAnio && filtrarPorMes && filtrarPorTipo;
   
   }), {
     columns: [
@@ -112,12 +144,15 @@ Inputs.table(dataConAnios.filter(d => {
         const propuesta = dataConAnios.filter(d => d.id===id)[0]["Propuesta"];
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
+        return wrapTextLink(propuesta, 250, link)
+
       }
     },
     layout: "auto",
     rows: 10,
-    height: 200,
+    height: 500,
   
 })
 

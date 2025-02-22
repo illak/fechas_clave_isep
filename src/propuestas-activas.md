@@ -6,6 +6,7 @@ toc: false
 
 <div class="hero">
   <h1>Fechas clave: Propuestas activas por período</h1>
+   Conocé las propuestas formativas que están, estuvieron o estarán vigentes por período, usando los filtros temporales. También podés personalizar la búsqueda indagando sólo en propuestas de acreditación múltiple o flexible.
 </div>
 
 
@@ -56,13 +57,15 @@ const dataConAnios = data.filter(d => {
     anio: fecha ? fecha.getFullYear() : null, // Agregar el año como una nueva clave
     mes: new Intl.DateTimeFormat("es-Es", options).format(fecha),
     mes_idx: fecha ? fecha.getMonth() : null,
-    finaliza_este_anio: fecha_fin === null ? "fecha fin sin definir!" :  fecha_fin.getFullYear() === current_year
+    fecha_fin: fecha_fin,
+    finaliza_este_anio: fecha_fin === null ? "fecha fin sin definir!" :  fecha_fin.getFullYear() === current_year,
+    inicio_prop: new Date(d["Inicio de la propuesta"].split("/").reverse().join("-")),
+    fin_prop: new Date(d["Fin de la propuesta"].split("/").reverse().join("-"))
   };
 });
 ```
 
 
-<h2>Inicio de la propuesta</h2>
 
 ```js
 const anios_a = Array.from(
@@ -80,27 +83,78 @@ meses
 const mes_a = Array.from(new Set(meses)).filter(Boolean) ;
 
 
-
-const anios = view(Inputs.select([null].concat(anios_a), {
+/*const anios = view(Inputs.select([null].concat(anios_a), {
     label: "Año",
     format: (t) => t ? String(t) : t,
   }));
 
-const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
+const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));*/
+
+
+
+const hoy = new Date();
+const primerDiaAnio = new Date(hoy.getFullYear(), 0, 1); // Enero es el mes 0
+const ultimoDiaAnio = new Date(hoy.getFullYear(), 11, 31); // Diciembre es el mes 11
+
+
+const start = view(Inputs.date({label: "Desde", value: primerDiaAnio}));
+const end = view(Inputs.date({label: "Hasta",  value: ultimoDiaAnio}));
+
+
+const tipos = dataConAnios.map(d => d["Criterio de carga"]);
+const tipos_a = Array.from(new Set(tipos)).filter(Boolean);
+
+const tipo = view(Inputs.select([null].concat(tipos_a), {label: "Tipo de propuesta (Acred. única y Acred. múltiple)"}));
 
 const finaliza_check = view(Inputs.toggle({label: "Finaliza este año"}));
+
+```
+
+```js
+function wrapText(x, w) {
+  return htl.html`<div style="
+      text-align: center;
+      font: 12px/1.6 var(--sans-serif);
+      color: black;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 4px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</div>`
+}
+
+function wrapTextLink(x, w, href) {
+  return htl.html`<a href=${href}
+      target=_blank
+      style=" display: block;
+      text-align: center;
+      font: 12px/1.6 var(--sans-serif);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 1px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</a>`
+}
 ```
 
 
 ```js
 Inputs.table(dataConAnios.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const finalizaEsteAnio = finaliza_check ? d["finaliza_este_anio"] === true : true;
+    //const filtrarPorAnio = anios ? d["anio"] === anios : true;
+    //const filtrarPorMes = mes ? d["mes"] === mes : true;
+    const finalizaEsteAnio = d["finaliza_este_anio"] === finaliza_check;
+
+    const filtroPeriodo = d["fin_prop"] >= start && d["inicio_prop"] <= end;
+
+    const filtroPorTipo = tipo ? d["Criterio de carga"] === tipo : true;
+
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && finalizaEsteAnio;
+    if(finaliza_check){
+      return finalizaEsteAnio && filtroPeriodo && filtroPorTipo;
+    }
+    return  filtroPeriodo && filtroPorTipo;
   
   }), {
     columns: [
@@ -119,12 +173,14 @@ Inputs.table(dataConAnios.filter(d => {
         const propuesta = dataConAnios.filter(d => d.id===id)[0]["Propuesta"];
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+        const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
+        return wrapTextLink(propuesta, 290, link)
       }
     },
     layout: "auto",
     rows: 10,
-    height: 200,
+    height: 400,
   
 })
 
@@ -133,9 +189,9 @@ Inputs.table(dataConAnios.filter(d => {
 
 ```js
 const settings = {
-      plotHeight: 900,
+      plotHeight: 1200,
       plotWidth: 900,
-      barHeight: 12,
+      barHeight: 16,
       textPosition: 0,
       fontSize: 12,
       barRoundness: 3,
@@ -163,12 +219,20 @@ d3.timeFormatDefaultLocale(localeES);
 const propuestas_gantt_data = dataConAnios.filter(d => {
 
     // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const finalizaEsteAnio = finaliza_check ? d["finaliza_este_anio"] === true : true;
+    //const filtrarPorAnio = anios ? d["anio"] === anios : true;
+    //const filtrarPorMes = mes ? d["mes"] === mes : true;
+    const finalizaEsteAnio = d["finaliza_este_anio"] === finaliza_check;
+
+    const filtroPeriodo = d["fin_prop"] >= start && d["inicio_prop"] <= end;
+
+    const filtroPorTipo = tipo ? d["Criterio de carga"] === tipo : true;
+
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && finalizaEsteAnio;
+    if(finaliza_check){
+      return finalizaEsteAnio && filtroPeriodo && filtroPorTipo;
+    }
+    return  filtroPeriodo && filtroPorTipo;
 
 }).map(d => {
 
@@ -193,6 +257,8 @@ const propuestas_gantt_data = dataConAnios.filter(d => {
 
 
 const domainByGroup = d3.groups(propuestas_gantt_data, d => d.tipo).sort((a, b) => d3.ascending(a.startDate, b.startDate)).map(d => d[0]);
+
+
 const domainByDate = propuestas_gantt_data.sort((a, b) => d3.ascending(a.startDate, b.startDate)).map(d => d.prop);
 
 const myColors = [
@@ -218,8 +284,8 @@ function drawGantt(data, {width} = {}) {
         x2: (d) => parser(d.endDate),
         fill: "tipo",
         rx: settings.barRoundness,
-        insetTop: settings.barHeight,
-        insetBottom: settings.barHeight
+        //insetTop: settings.barHeight,
+        //insetBottom: settings.barHeight
       }),
       Plot.text(data, {
         y: "prop",
@@ -229,7 +295,7 @@ function drawGantt(data, {width} = {}) {
         dy: settings.textPosition,
         fontSize: settings.fontSize,
         stroke: "white",
-        fill: "dimgray",
+        fill: "grey",
         fontWeight: 500
       }),
       Plot.tip(data, Plot.pointerY({

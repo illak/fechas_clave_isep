@@ -1,10 +1,14 @@
 ---
 theme: [dashboard, light]
-title: Cursado
+title: Cursado por propuesta formativa
 toc: false
 ---
 
-# Fechas clave: Cursado
+
+<div class="hero">
+  <h1>Fechas clave: Cursado por propuesta formativa</h1>
+  Filtrando por la propuesta y la cohorte correspondientes, podrás visualizar la secuencia de cursado de la propuesta, tanto en formato tabla como en calendario. 
+</div>
 
 <!-- Load and transform the data -->
 
@@ -81,8 +85,6 @@ const dataConAnios = data.filter(d => {
 ```
 
 
-<h2>Inicio del cursado</h2>
-
 ```js
 
 const propuestas_a =Array.from(
@@ -106,19 +108,34 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 
 
 
-const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
+//const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
 
-const anios = view(Inputs.select([null].concat(anios_a), {
+/*const anios = view(Inputs.select([null].concat(anios_a), {
     label: "Año",
     format: (t) => t ? String(t) : t,
-  }));
+  }));*/
 
-const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
+//const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
-const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));
+//const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));
 
-const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
+let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
+```
 
+```js
+
+const filtered = propuesta ? dataConAnios.filter(d => {
+    if(d["Propuesta"] === propuesta){
+      return true
+    }
+      return false }).map(d => d["Cohorte"]) : dataConAnios.map(d => d["Cohorte"]);
+
+
+const cohortes_a = Array.from(new Set(filtered)).filter(Boolean);
+
+const cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
+
+const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…"}));
 ```
 
 ```js
@@ -133,22 +150,38 @@ function wrapText(x, w) {
       padding: 4px;
       width: ${w}px;">${x.toLocaleString("en-US")}</div>`
 }
+
+function wrapTextLink(x, w, href) {
+  return htl.html`<a href=${href}
+      target=_blank
+      style=" display: block;
+      text-align: center;
+      font: 12px/1.6 var(--sans-serif);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 1px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</a>`
+}
 ```
 
 
 ```js
 
 
-Inputs.table(dataConAnios.filter(d => {
+Inputs.table(search.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
+    /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
     const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
     const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorEstado = status ? d["estado"] === status : true;
+    const filtrarPorEstado = status ? d["estado"] === status : true;*/
+    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorCohorte = cohorte ? d["Cohorte"] === cohorte : true;
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
+    //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
+    return filtrarPorPropuesta && filtrarPorCohorte;
   
   }), {
     columns: [
@@ -172,7 +205,9 @@ Inputs.table(dataConAnios.filter(d => {
         const uc = dataConAnios.filter(d => d.id===id)[0]["Nombre del módulo"];
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
+        //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
+        const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=" + id
+        return wrapTextLink(uc, 250, link)
       }
     },
     layout: "auto",
@@ -187,7 +222,7 @@ Inputs.table(dataConAnios.filter(d => {
 
 ```js
 const settings = {
-      plotHeight: 600,
+      plotHeight: 900,
       plotWidth: 900,
       barHeight: 12,
       textPosition: 0,
@@ -217,16 +252,19 @@ d3.timeFormatDefaultLocale(localeES);
 ```js
 const parser = d3.timeParse("%d/%m/%Y");
 
-const uc_gantt_data = dataConAnios.filter(d => {
+const uc_gantt_data = search.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
+    /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
     const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
     const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorEstado = status ? d["estado"] === status : true;
+    const filtrarPorEstado = status ? d["estado"] === status : true;*/
+    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorCohorte = cohorte ? d["Cohorte"] === cohorte : true;
 
     // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
+    //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
+    return filtrarPorPropuesta && filtrarPorCohorte
   
   }).map(d => {
 
@@ -290,8 +328,8 @@ function drawGantt(data, {width} = {}) {
         x2: (d) => d.endDate,
         fill: "tipo",
         rx: settings.barRoundness,
-        insetTop: settings.barHeight,
-        insetBottom: settings.barHeight
+        //insetTop: settings.barHeight,
+        //insetBottom: settings.barHeight
       }),
       Plot.text(data, {
         y: "id",
@@ -341,7 +379,7 @@ function drawGantt(data, {width} = {}) {
       tickSize: null,
       grid: (settings.gridlines == "y") | (settings.gridlines == "both") ? true : null
     },
-    color: { scheme: "tableau10" }
+    color: { domain: domainByGroup, scheme: "Set3", legend: true }
   })
 };
 
@@ -352,3 +390,21 @@ function drawGantt(data, {width} = {}) {
   ${resize((width) => drawGantt(uc_gantt_data, {width}))}
 </div>
 
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    font-family: var(--sans-serif);
+    margin: 0rem 0 0rem;
+    text-align: left;
+  }
+
+  .hero h1 {
+    font-size: 2rem; /* Ajusta según sea necesario */
+    line-height: 1.5;
+    font-weight: bold;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    margin: 0;
+  }
+</style>

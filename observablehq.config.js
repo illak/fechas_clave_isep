@@ -10,9 +10,10 @@ export default {
      {
        name: "Secciones",
        pages: [
-         {name: "Propuestas", path: "/fechas-clave"},
+         {name: "Inscripciones", path: "/fechas-clave"},
          {name: "Propuesta activas", path: "/propuestas-activas"},
-         {name: "Cursado", path: "/cursado"},
+         {name: "Cursado por propuesta formativa", path: "/cursado"},
+         {name: "Cursado por período", path: "/cursado-por-periodo"},
          {name: "Cursado IFDA", path: "/cursado-ifda"},
          {name: "Ficha Propuesta", path: "/propuesta-info"},
        ]
