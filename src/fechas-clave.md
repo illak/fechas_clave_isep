@@ -4,6 +4,9 @@ title: Inscripciones
 toc: false
 ---
 
+<div style="text-align: center;">
+  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
 
 <div class="hero">
   <h1>Inscripciones: Períodos y Propuestas</h1>
@@ -81,7 +84,7 @@ const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
 const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo de inscripción"}));
 
-const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…"}));
+const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…", locale: "es"}));
 
 ```
 

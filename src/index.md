@@ -2,6 +2,11 @@
 toc: false
 ---
 
+
+<div style="text-align: center;">
+  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
 <div class="hero">
   <h1>Fechas clave</h1>
   <h2>Próximamente en esta sección inicial irá un mini instructivo o similar!!</h2>
