@@ -47,7 +47,7 @@ const ifdas_l = [
   "Menéndez Pidal"
 ]
 
-const status_l = ["Pendiente", "Cursando", "Finalizado"];
+const status_l = ["Pendiente", "Cursando"];
 
 // Fecha actual
 const hoy = new Date();                 
@@ -120,7 +120,7 @@ const dataConAnios = data.filter(d => {
     estado: status,
     tipo_ed: tipo_ed
   };
-});
+}).filter(d => d["estado"] === "Pendiente" || d["estado"] === "Cursando");
 
 ```
 
@@ -154,7 +154,7 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 ```js
 const ifdas = view(Inputs.select([null].concat(ifdas_l), {label: "IFDA"}));
 
-//const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
+const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
 
 const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
 ```
@@ -229,11 +229,11 @@ const filterIFDA = dataConAnios.filter(d => {
       const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;*/
       const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
       const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-      //const filtrarPorEstado = status ? d["estado"] === status : true;
+      const filtrarPorEstado = status ? d["estado"] === status : true;
 
       // Retornar solo las filas que cumplen con los filtros activos
       //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
-      return filtrarPorPropuesta && filtrarPorIFDA
+      return filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado
   });
 
 ```
@@ -250,11 +250,11 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
       const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;*/
       const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
       const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-      //const filtrarPorEstado = status ? d["estado"] === status : true;
+      const filtrarPorEstado = status ? d["estado"] === status : true;
 
       // Retornar solo las filas que cumplen con los filtros activos
       //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
-      return filtrarPorPropuesta && filtrarPorIFDA
+      return filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado
   
   }), {
     columns: [
@@ -358,17 +358,17 @@ d3.timeFormatDefaultLocale(localeES);
 const parser = d3.timeParse("%d/%m/%Y");
 
 const uc_gantt_data = dataConAnios.filter(d => {
-      // Filtrar dinámicamente según los valores de `anios` y `mes`
+       // Filtrar dinámicamente según los valores de `anios` y `mes`
       /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
       const filtrarPorMes = mes ? d["mes"] === mes : true;
       const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;*/
       const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
       const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-      //const filtrarPorEstado = status ? d["estado"] === status : true;
+      const filtrarPorEstado = status ? d["estado"] === status : true;
 
       // Retornar solo las filas que cumplen con los filtros activos
       //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
-      return filtrarPorPropuesta && filtrarPorIFDA
+      return filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado
   
   }).map(d => {
 
