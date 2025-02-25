@@ -154,7 +154,7 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 ```js
 const ifdas = view(Inputs.select([null].concat(ifdas_l), {label: "IFDA"}));
 
-const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
+//const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
 
 const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
 ```
@@ -162,14 +162,14 @@ const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propu
   <div>
 
 ```js
-const anios = view(Inputs.select([null].concat(anios_a), {
+/*const anios = view(Inputs.select([null].concat(anios_a), {
     label: "Año",
     format: (t) => t ? String(t) : t,
   }));
 
 const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
-const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));
+const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));*/
 ```
   </div>
 </div>
@@ -224,15 +224,16 @@ function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
 ```js
 const filterIFDA = dataConAnios.filter(d => {
       // Filtrar dinámicamente según los valores de `anios` y `mes`
-      const filtrarPorAnio = anios ? d["anio"] === anios : true;
+      /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
       const filtrarPorMes = mes ? d["mes"] === mes : true;
-      const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
+      const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;*/
       const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
       const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-      const filtrarPorEstado = status ? d["estado"] === status : true;
+      //const filtrarPorEstado = status ? d["estado"] === status : true;
 
       // Retornar solo las filas que cumplen con los filtros activos
-      return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
+      //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
+      return filtrarPorPropuesta && filtrarPorIFDA
   });
 
 ```
@@ -243,16 +244,17 @@ const filterIFDA = dataConAnios.filter(d => {
 
 ```js
 const selects = view(Inputs.table(dataConAnios.filter(d => {
-    // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
-    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-    const filtrarPosEstado = status ? d["estado"] === status : true;
+      // Filtrar dinámicamente según los valores de `anios` y `mes`
+      /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
+      const filtrarPorMes = mes ? d["mes"] === mes : true;
+      const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;*/
+      const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+      const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
+      //const filtrarPorEstado = status ? d["estado"] === status : true;
 
-    // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
+      // Retornar solo las filas que cumplen con los filtros activos
+      //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
+      return filtrarPorPropuesta && filtrarPorIFDA
   
   }), {
     columns: [
@@ -356,16 +358,17 @@ d3.timeFormatDefaultLocale(localeES);
 const parser = d3.timeParse("%d/%m/%Y");
 
 const uc_gantt_data = dataConAnios.filter(d => {
-    // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
-    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-    const filtrarPosEstado = status ? d["estado"] === status : true;
+      // Filtrar dinámicamente según los valores de `anios` y `mes`
+      /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
+      const filtrarPorMes = mes ? d["mes"] === mes : true;
+      const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;*/
+      const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+      const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
+      //const filtrarPorEstado = status ? d["estado"] === status : true;
 
-    // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
+      // Retornar solo las filas que cumplen con los filtros activos
+      //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPorEstado;
+      return filtrarPorPropuesta && filtrarPorIFDA
   
   }).map(d => {
 
@@ -492,68 +495,7 @@ function drawGantt(data, {width} = {}) {
 </div>
 
 
-Versión original (se reemplazó por la de más arriba)
-```js
-Inputs.table(dataConAnios.filter(d => {
-    // Filtrar dinámicamente según los valores de `anios` y `mes`
-    const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
-    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorIFDA = ifdas ? d["ifdas"][ifdas] > 0 : true;
-    const filtrarPosEstado = status ? d["estado"] === status : true;
 
-    // Retornar solo las filas que cumplen con los filtros activos
-    return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorIFDA && filtrarPosEstado;
-  
-  }), {
-    columns: [
-      "Propuesta",
-      "Nombre del módulo",
-      "Cohorte",
-      "Inicio de cursado",
-      "Cierre de cursado",
-      "TOTAL DE AULAS",
-      ...ifdas_l
-    ],
-    header: {
-      "Nombre del módulo": "Cursado de",
-      "Criterio de carga": "Tipología",
-      "Propuesta": "Propuesta formativa",
-      "Momento en el que se ofrece": "Tipo de edición",
-      "Iescer": "IESCER"
-    },
-    format: {
-        "Propuesta": (d) => wrapText(d),
-        "Nombre del módulo": (d) => wrapText(d),
-        "Inicio de cursado": (d) => wrapText(d),
-        "Cierre de cursado": (d) => wrapText(d),
-        "TOTAL DE AULAS": (d) => centerText(d),
-        "Simón Bolivar": (d) => centerText(d, "Simón Bolivar"),
-        "Carbó": (d) => centerText(d, "Carbó"),
-        "Leguizamón": (d) => centerText(d, "Leguizamón"),
-        "Agulla": (d) => centerText(d, "Agulla"),
-        "ISEP": (d) => centerText(d, "ISEP"),
-        "ISPT": (d) => centerText(d, "ISPT"),
-        "Trettel": (d) => centerText(d, "Trettel"),
-        "Zípoli": (d) => centerText(d, "Zípoli"),
-        "Carena": (d) => centerText(d, "Carena"),
-        "Urquiza": (d) => centerText(d, "Urquiza"),
-        "Iescer": (d) => centerText(d, "Iescer"),
-        "Houssay": (d) => centerText(d, "Houssay"),
-        "San Martín":(d) => centerText(d, "San Martín"),
-        "Lefebvre": (d) => centerText(d, "Lefebvre"),
-        "Castro": (d) => centerText(d, "Castro"),
-        "Menéndez Pidal": (d) => centerText(d, "Menéndez Pidal")
-    },
-    layout: "auto",
-    rows: 30,
-    height: 450,
-    width: "auto",  
-})
-
-
-```
 
 
 <style>
