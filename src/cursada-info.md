@@ -156,7 +156,7 @@ const link = cursada_data_id["Documento de la propuesta"];
       <div class="card"><h2><b>Cohorte:</b> ${cursada_data_id["Cohorte"]}</h2></div>
       <div class="card"><b>Tipología:</b> ${cursada_data_id["Criterio de carga"]}</div>
       <div class="card"><b>ID de edición:</b> ${cursada_data_id["ID de la edición del módulo"]}</div>
-      <div class="card"><b>Tipo de edición:</b> ${cursada_data_id["tipo_ed"]}</div>
+      <div class="card"><b>Tipo de edición:</b> ${cursada_data_id["label_tipo_ed"]}</div>
   </div>
 </div>
 
