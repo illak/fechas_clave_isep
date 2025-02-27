@@ -129,7 +129,7 @@ const cursada_data = data.filter(d => {
     tipo_ed: tipo_ed,
     ifdas: ifdas,
     label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"],
-    label_tipo_ed: d["Criterio de carga"] === "Carrera - Acred. única" ? "Cursado" : d["tipo_ed"]
+    label_tipo_ed: d["Criterio de carga"] === "Carrera - Acred. única" ? "Cursado" : tipo_ed
   };
 });
 ```
