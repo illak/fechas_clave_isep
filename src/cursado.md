@@ -26,7 +26,20 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRyV5lbkXamFX_ORebR
 const data = await getTsv(url);
 ```
 
+
+
 ```js
+function formatDate(dateString) {
+    let date = new Date(dateString);
+    if (isNaN(date)) return dateString; // Si no es una fecha válida, devolver el original
+
+    let day = String(date.getUTCDate()).padStart(2, '0');
+    let month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    let year = date.getUTCFullYear();
+
+    return `${day}/${month}/${year}`;
+}
+
 // Fecha actual
 const hoy = new Date();                 
 // Normalizar la fecha actual al formato "YYYY-MM-DD" (ignorando horas)
@@ -36,19 +49,22 @@ const status_l = ["Pendiente", "Cursando", "Finalizado"];
 
 const dataConAnios = data.filter(d => {
 
-  const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
-  const uc = d["Criterio de carga"] === "Unidad curricular";
+  const acred_unica = (d["Criterio de carga"] === "Carrera - Acred. única" && d["Inicio de la propuesta"] !== "");
+  const uc = (d["Criterio de carga"] === "Unidad curricular" && d["Inicio de cursado"] !== "");
 
   return acred_unica || uc;
 
-}).filter(d => d["Inicio de cursado"] != "").map(d => {
+}).map(d => {
   // Convertir la fecha de "Inicio de cursado" a un objeto Date
-  const fecha = d["Inicio de cursado"]
-    ? new Date(d["Inicio de cursado"].split("/").reverse().join("-"))
+  const inicio_col = d["Criterio de carga"] === "Carrera - Acred. única" ?  "Inicio de la propuesta" : "Inicio de cursado";
+  const fin_col = d["Criterio de carga"] === "Carrera - Acred. única" ?  "Fin de la propuesta" : "Cierre de cursado";
+
+  const fecha = d[inicio_col]
+    ? new Date(d[inicio_col].split("/").reverse().join("-"))
     : null;
 
-  const fecha_f = d["Cierre de cursado"]
-    ? new Date(d["Cierre de cursado"].split("/").reverse().join("-"))
+  const fecha_f = d[fin_col]
+    ? new Date(d[fin_col].split("/").reverse().join("-"))
     : null;
 
   const options = { month: "long" };
@@ -78,7 +94,10 @@ const dataConAnios = data.filter(d => {
     mes_idx: fecha.getMonth(),
     semestre: fecha.getMonth() < 6? "Primer semestre" : "Segundo semestre",
     estado: status,
-    tipo_ed: tipo_ed
+    tipo_ed: tipo_ed,
+    inicio: formatDate(fecha),
+    fin: fecha_f ? formatDate(fecha_f) : null,
+    label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"]
   };
 });
 
@@ -188,26 +207,30 @@ Inputs.table(search.filter(d => {
       "id",
       "Criterio de carga",
       "Propuesta",
-      "Inicio de cursado",
-      "Cierre de cursado",
+      "inicio",
+      "fin",
       "tipo_ed"
     ],
     header: {
       "id": "Cursado de",
       "Criterio de carga": "Tipología",
       "Propuesta": "Propuesta formativa",
+      "inicio": "Inicio de cursado",
+      "fin": "Cierre de cursado",
       "tipo_ed": "Tipo de edición"
     },
     format: {
       "Propuesta": (d) => wrapText(d, 220),
       //"id": (d) => wrapText(d,220),
       id: id => {
-        const uc = dataConAnios.filter(d => d.id===id)[0]["Nombre del módulo"];
+        const uc = dataConAnios.filter(d => d.id===id)[0]["label"];
+        const criterio = dataConAnios.filter(d => d.id===id)[0]["Criterio de carga"];
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
-        const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=" + id
-        return wrapTextLink(uc, 250, link)
+        const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";
+
+        return wrapTextLink(uc, 250, pre_link + id)
       }
     },
     layout: "auto",
@@ -268,12 +291,12 @@ const uc_gantt_data = search.filter(d => {
   
   }).map(d => {
 
-  const prop = d["Nombre del módulo"];
+  const prop = d["Criterio de carga"] ===  "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"];
   const propuesta = d["Propuesta"];
   const cohorte = d["Cohorte"];
   const tipo = d["Criterio de carga"];
-  const startDate = parser(d["Inicio de cursado"]);//.split("/"));//.reverse().join("-"));
-  const endDate = parser(d["Cierre de cursado"]);//.split("/"));//.reverse().join("-"));
+  const startDate = parser(d["inicio"]);//parser(d["Inicio de cursado"]);//.split("/"));//.reverse().join("-"));
+  const endDate = parser(d["fin"]);//parser(d["Cierre de cursado"]);//.split("/"));//.reverse().join("-"));
   const id = d["id"];
   const anio = d["anio"];
   const mes = d["mes"];
@@ -299,7 +322,7 @@ const domainByDate = uc_gantt_data.sort((a, b) => d3.ascending(a.startDate, b.st
 
 const myColors = [
             {tipo: "Carrera - Acred. única", color: "gold"},
-            {tipo: "Carrera - Acred. múltiple", color: "#56B4e9"}
+            {tipo: "Carrera - Acred. múltiple", color: "#CEC0D0"}
             ]
 
 const colorMap = new Map(myColors.map((obj) => [obj.tipo, obj.color]));
@@ -379,7 +402,7 @@ function drawGantt(data, {width} = {}) {
       tickSize: null,
       grid: (settings.gridlines == "y") | (settings.gridlines == "both") ? true : null
     },
-    color: { domain: domainByGroup, scheme: "Set3", legend: true }
+    color: { domain: domainByGroup, scheme: "Pastel2", legend: true }
   })
 };
 

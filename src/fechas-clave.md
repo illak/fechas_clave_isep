@@ -71,22 +71,29 @@ const anios_a = Array.from(
     return fecha ? fecha.getFullYear() : null;
   }).filter(Boolean))).sort();
 
-const meses = dataConAnios.map(d => ({mes: d["mes"], idx: d["mes_idx"]})).sort((a, b) => a.idx - b.idx).map(d => d["mes"]);
-const mes_a = Array.from(new Set(meses)).filter(Boolean) ;
-
 
 const anios = view(Inputs.select([null].concat(anios_a), {
     label: "Año",
     format: (t) => t ? String(t) : t,
   }));
 
+
+```
+
+```js
+const meses = dataConAnios.filter(d => anios ? d["anio"] === anios : true)
+      .map(d => ({mes: d["mes"], idx: d["mes_idx"]}))
+      .sort((a, b) => a.idx - b.idx).map(d => d["mes"]);
+
+const mes_a = Array.from(new Set(meses)).filter(Boolean) ;
+
 const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
 const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo de inscripción"}));
 
 const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…", locale: "es"}));
-
 ```
+
 
 <div>
 A continuación, podrás observar algunos datos de la prematriculación del período o propuesta/s seleccionada/s. Haciendo clic en cada propuesta, verás todos los datos de su prematriculación:
