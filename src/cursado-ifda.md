@@ -4,6 +4,10 @@ title: Cursado
 toc: false
 ---
 
+<div style="text-align: center;">
+  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
 <div class="hero">
   <h1>Fechas clave: Cursado por IFDA</h1>
   Acá podrás conocer las propuestas distribuidas por IFDA y la cantidad de aulas vigentes en cada caso.

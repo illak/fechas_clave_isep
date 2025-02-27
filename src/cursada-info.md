@@ -127,7 +127,9 @@ const cursada_data = data.filter(d => {
     semestre: fecha.getMonth() < 6? "Primer semestre" : "Segundo semestre",
     estado: status,
     tipo_ed: tipo_ed,
-    ifdas: ifdas
+    ifdas: ifdas,
+    label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"],
+    label_tipo_ed: d["Criterio de carga"] === "Carrera - Acred. única" ? "Cursado" : d["tipo_ed"]
   };
 });
 ```
@@ -143,7 +145,7 @@ const cursada_data_id = cursada_data.filter(d => {
 const link = cursada_data_id["Documento de la propuesta"];
 ```
 <div class="hero">
-  <h2>${cursada_data_id["Nombre del módulo"]}</h2>
+  <h2>${cursada_data_id["label"]}</h2>
 </div>
 
 <br>

@@ -4,9 +4,12 @@ title: Cursado por propuesta formativa
 toc: false
 ---
 
+<div style="text-align: center;">
+  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
 
 <div class="hero">
-  <h1>Fechas clave: Cursado por propuesta formativa</h1>
+  <h1>Cursado por propuesta formativa</h1>
   Filtrando por la propuesta y la cohorte correspondientes, podrás visualizar la secuencia de cursado de la propuesta, tanto en formato tabla como en calendario. 
 </div>
 
@@ -25,8 +28,6 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRyV5lbkXamFX_ORebR
 
 const data = await getTsv(url);
 ```
-
-
 
 ```js
 function formatDate(dateString) {
@@ -103,14 +104,17 @@ const dataConAnios = data.filter(d => {
 
 ```
 
+```js
+const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…"}));
+```
 
 ```js
 
 const propuestas_a =Array.from(
-  new Set(dataConAnios.map(d => d["Propuesta"]).filter(Boolean))).sort();
+  new Set(search.map(d => d["Propuesta"]).filter(Boolean))).sort();
 
 const anios_a = Array.from(
-  new Set(dataConAnios.map(d => {
+  new Set(search.map(d => {
     // Convertir "Inicio de la propuesta" a tipo Date
     const fecha = d["Inicio de cursado"]
       ? new Date(d["Inicio de cursado"].split("/").reverse().join("-"))
@@ -119,10 +123,10 @@ const anios_a = Array.from(
     return fecha ? fecha.getFullYear() : null;
   }).filter(Boolean))).sort();
 
-const meses = dataConAnios.map(d => ({mes: d["mes"], idx: d["mes_idx"]})).sort((a, b) => a.idx - b.idx).map(d => d["mes"]);
+const meses = search.map(d => ({mes: d["mes"], idx: d["mes_idx"]})).sort((a, b) => a.idx - b.idx).map(d => d["mes"]);
 const mes_a = Array.from(new Set(meses)).filter(Boolean);
 
-const semestres = dataConAnios.map(d => d["semestre"]);
+const semestres = search.map(d => d["semestre"]);
 const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 
 
@@ -143,18 +147,17 @@ let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propues
 
 ```js
 
-const filtered = propuesta ? dataConAnios.filter(d => {
+const filtered = propuesta ? search.filter(d => {
     if(d["Propuesta"] === propuesta){
       return true
     }
-      return false }).map(d => d["Cohorte"]) : dataConAnios.map(d => d["Cohorte"]);
+      return false }).map(d => d["Cohorte"]) : search.map(d => d["Cohorte"]);
 
 
 const cohortes_a = Array.from(new Set(filtered)).filter(Boolean);
 
 const cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
 
-const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…"}));
 ```
 
 ```js
@@ -230,7 +233,7 @@ Inputs.table(search.filter(d => {
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
         const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";
 
-        return wrapTextLink(uc, 250, pre_link + id)
+        return wrapTextLink(uc, 250, "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=" + id)
       }
     },
     layout: "auto",

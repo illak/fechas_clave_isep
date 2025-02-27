@@ -4,8 +4,12 @@ title: Propuestas
 toc: false
 ---
 
+<div style="text-align: center;">
+  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
 <div class="hero">
-  <h1>Fechas clave: Propuestas activas por período</h1>
+  <h1>Propuestas activas por período</h1>
    Conocé las propuestas formativas que están, estuvieron o estarán vigentes por período, usando los filtros temporales. También podés personalizar la búsqueda indagando sólo en propuestas de acreditación múltiple o flexible.
 </div>
 
@@ -331,7 +335,7 @@ function drawGantt(data, {width} = {}) {
       tickSize: null,
       grid: (settings.gridlines == "y") | (settings.gridlines == "both") ? true : null
     },
-    color: { domain: domainByGroup, range: colors, legend: true }
+    color: { domain: domainByGroup, scheme: "Pastel2", legend: true }
   })
 };
 

@@ -11,11 +11,10 @@ export default {
        name: "Secciones",
        pages: [
          {name: "Inscripciones: Períodos y Propuestas", path: "/fechas-clave"},
-         {name: "Fechas clave: Propuestas activas por período", path: "/propuestas-activas"},
-         {name: "Fechas clave: Cursado por propuesta formativa", path: "/cursado"},
-         {name: "Fechas clave: Cursado por período", path: "/cursado-por-periodo"},
-         {name: "Cursado IFDA", path: "/cursado-ifda"},
-         {name: "Ficha Propuesta", path: "/propuesta-info"},
+         {name: "Propuestas activas por período", path: "/propuestas-activas"},
+         {name: "Cursado por propuesta formativa", path: "/cursado"},
+         {name: "Cursado por período", path: "/cursado-por-periodo"},
+         {name: "Cursado IFDA", path: "/cursado-ifda"}
        ]
      }
    ],

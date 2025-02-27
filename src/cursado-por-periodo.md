@@ -4,9 +4,12 @@ title: Cursado por período
 toc: false
 ---
 
+<div style="text-align: center;">
+  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
 
 <div class="hero">
-  <h1>Fechas clave: Cursado por período</h1>
+  <h1>Cursado por período</h1>
   Conocé qué unidades curriculares o propuestas de acreditación única se cursan por períodos utilizando los filtros temporales. 
 </div>
 

@@ -10,7 +10,7 @@ toc: false
 
 <div class="hero">
   <h1>Inscripciones: Períodos y Propuestas</h1>
-  En esta sección, podrás consultar en qué períodos tuvimos prematriculaciones y para qué propuestas. Podés usar los filtros de año y mes -que corresponden a las fechas de inscripción (no de cursado)- o de tipo de inscripción. También tenés disponible el buscador por palabra clave para indagar los datos de prematriculación de una propuesta específica. 
+  En esta sección, podrás consultar en qué períodos tuvimos prematriculaciones y para qué propuestas. Podés usar los filtros de año y mes -que corresponden a las fechas de inscripción (no de cursado)- o de tipo de inscripción. También tenés disponible el buscador por palabra clave para indagar los datos de prematriculación de una propuesta específica.
 </div>
 
 <!-- Load and transform the data -->
