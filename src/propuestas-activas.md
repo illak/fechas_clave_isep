@@ -164,13 +164,13 @@ Inputs.table(dataConAnios.filter(d => {
     columns: [
       "id",
       "Cohorte",
-      "Inscripción: inicio",
-      "Inscripción: fin",
-      "propuesta: Tipo de inscripción"
+      "Inicio de la propuesta",
+      "Fin de la propuesta",
+      //"propuesta: Tipo de inscripción"
     ],
     header: {
       "id": "Propuesta",
-      "propuesta: Tipo de inscripción": "Tipo de inscripción"
+      //"propuesta: Tipo de inscripción": "Tipo de inscripción"
     },
     format: {
       id: id => {
