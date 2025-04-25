@@ -204,6 +204,12 @@ const link = cursada_data_id["Documento de la propuesta"];
 
 </div>
 
+<div class="card" style="background-color: white;">
+  <h1>Cantidad de aulas No Asociadas</h1>
+
+ <div class="card"><b></b> <h1 id="cupo">${cursada_data_id["TOTAL DE AULAS NO ASOCIADAS"]}</h1></div>
+
+</div>
 
 
 ```js
