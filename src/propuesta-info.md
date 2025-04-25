@@ -75,17 +75,20 @@ const linkres2 = propuesta_data["documento de resolución de implementación"];
 
   <div class="grid grid-cols-2">
     <div>
-      <b>Nombre corto:</b> <i>${propuesta_data["Nombre corto"]}</i>
-      <br>
-      <b>Coordinación de la propuesta:</b> <i>${propuesta_data["Coordinación de la propuesta"]}</i>
+        <b>Nombre corto:</b> <i>${propuesta_data["Nombre corto"]}</i>
+        <br>
     </div>
     <div>
-      <div class="card" style="text-align:center;"><h3>🔗 ${getLink(link, "Documento de la propuesta")}</h3></div>
-      <div class="card" style="text-align:center;"><h3>🔗 ${getLink(linkres1, "Documento de resolución de aprobación")}</h3></div>
-      <div class="card" style="text-align:center;"><h3>🔗 ${getLink(linkres2, "Documento de resolución de implementación")}</h3></div>
+        <b>Coordinación de la propuesta:</b> <i>${propuesta_data["Coordinación de la propuesta"]}</i>
+        <br>
     </div>
   </div>
 
+  <div class="grid grid-cols-3">
+    <div class="card" style="text-align:center;"><h3>🔗 ${getLink(link, "Documento de la propuesta")}</h3></div>
+    <div class="card" style="text-align:center;"><h3>🔗 ${getLink(linkres1, "Documento de resolución de aprobación")}</h3></div>
+    <div class="card" style="text-align:center;"><h3>🔗 ${getLink(linkres2, "Documento de resolución de implementación")}</h3></div>
+  </div>
 
 <br>
 <div class="card" style="background-color: white;">
