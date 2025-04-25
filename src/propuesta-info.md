@@ -30,8 +30,8 @@ const id = params.get('id');
 
 
 ```js
-function getLink(){
-  return html`<a href="${link}" rel="external" target="_blank">Documento de la propuesta</a>`
+function getLink(link, text){
+  return html`<a href="${link}" rel="external" target="_blank">${text}</a>`
 }
 ```
 
@@ -64,6 +64,8 @@ const propuesta_data = data.filter(d => {
   })[0];
 
 const link = propuesta_data["Documento de la propuesta"];
+const linkres1 = propuesta_data["documento de resolución de aprobación"];
+const linkres2 = propuesta_data["documento de resolución de implementación"];
 ```
 <div class="hero">
   <h2>${propuesta_data["Propuesta"]}</h2>
@@ -77,7 +79,11 @@ const link = propuesta_data["Documento de la propuesta"];
       <br>
       <b>Coordinación de la propuesta:</b> <i>${propuesta_data["Coordinación de la propuesta"]}</i>
     </div>
-    <div class="card" style="text-align:center;"><h3>🔗 ${getLink()}</h3></div>
+    <div>
+      <div class="card" style="text-align:center;"><h3>🔗 ${getLink(link, "Documento de la propuesta")}</h3></div>
+      <div class="card" style="text-align:center;"><h3>🔗 ${getLink(linkres1, "Documento de resolución de aprobación")}</h3></div>
+      <div class="card" style="text-align:center;"><h3>🔗 ${getLink(linkres2, "Documento de resolución de implementación")}</h3></div>
+    </div>
   </div>
 
 
