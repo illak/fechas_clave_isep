@@ -39,12 +39,17 @@ const dataConAnios = data.filter(d => {
 
   return acred_unica || acred_multi;
 
+}).filter(d => {
+  return d["Inscripción: inicio"]
 }).map(d => {
   // Convertir la fecha de "Inscripción: inicio" a un objeto Date
   const fecha = d["Inscripción: inicio"]
     ? new Date(d["Inscripción: inicio"].split("/").reverse().join("-"))
     : null;
 
+  console.log(d);
+  console.log(fecha);
+  
 
   const options = { month: "long" };
   
