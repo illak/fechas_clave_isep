@@ -47,11 +47,13 @@ const hoy = new Date();
 const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 
 const status_l = ["Pendiente", "Cursando", "Finalizado"];
+const criterios_uc1 = ["Carrera - Acred. única", "Carrera - Acred. múltiple estructurado flexible"];
+const criterios_uc2 = ["Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
 
 const dataConAnios = data.filter(d => {
 
   const acred_unica = (d["Criterio de carga"] === "Carrera - Acred. única" && d["Inicio de la propuesta"] !== "");
-  const uc = (d["Criterio de carga"] === "Unidad curricular" && d["Inicio de cursado"] !== "");
+  const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
 
   return acred_unica || uc;
 
@@ -98,7 +100,7 @@ const dataConAnios = data.filter(d => {
     tipo_ed: tipo_ed,
     inicio: formatDate(fecha),
     fin: fecha_f ? formatDate(fecha_f) : null,
-    label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"]
+    label: criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"]
   };
 });
 
@@ -123,6 +125,8 @@ const anios_a = Array.from(
     return fecha ? fecha.getFullYear() : null;
   }).filter(Boolean))).sort();
 
+const ciclos_a = Array.from(  new Set(search.map(d => d["Ciclo"]).filter(Boolean))).sort();
+
 const meses = search.map(d => ({mes: d["mes"], idx: d["mes_idx"]})).sort((a, b) => a.idx - b.idx).map(d => d["mes"]);
 const mes_a = Array.from(new Set(meses)).filter(Boolean);
 
@@ -141,6 +145,8 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 //const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
 //const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));
+
+let ciclo = view(Inputs.select([null].concat(ciclos_a), {label: "Ciclo"}));
 
 let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
 ```
@@ -200,10 +206,12 @@ Inputs.table(search.filter(d => {
     const filtrarPorEstado = status ? d["estado"] === status : true;*/
     const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
     const filtrarPorCohorte = cohorte ? d["Cohorte"] === cohorte : true;
+    const filtrarPorCiclo = ciclo ? d["Ciclo"] === ciclo : true;
+
 
     // Retornar solo las filas que cumplen con los filtros activos
     //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
-    return filtrarPorPropuesta && filtrarPorCohorte;
+    return filtrarPorCiclo && filtrarPorPropuesta && filtrarPorCohorte;
   
   }), {
     columns: [

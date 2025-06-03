@@ -39,9 +39,10 @@ let current_year = d.getFullYear();
 const dataConAnios = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
-  const acred_multi = d["Criterio de carga"] === "Carrera - Acred. múltiple";
+  const acred_multi = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado";
+  const acred_multi_flex = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible";
 
-  return acred_unica || acred_multi;
+  return acred_unica || acred_multi || acred_multi_flex;
 
 }).map(d => {
   // Convertir la fecha de "Inicio de la propuesta" a un objeto Date

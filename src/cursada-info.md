@@ -63,10 +63,14 @@ const hoy = new Date();
 // Normalizar la fecha actual al formato "YYYY-MM-DD" (ignorando horas)
 const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 
+const criterios_uc1 = ["Carrera - Acred. única", "Carrera - Acred. múltiple estructurado flexible"];
+const criterios_uc2 = ["Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
+
 const cursada_data = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
-  const uc = d["Criterio de carga"] === "Unidad curricular";
+  //const uc = d["Criterio de carga"] === "Unidad curricular";
+  const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
 
   return acred_unica || uc;
 
