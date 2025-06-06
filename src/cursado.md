@@ -146,25 +146,38 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 
 //const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre"}));
 
-let ciclo = view(Inputs.select([null].concat(ciclos_a), {label: "Ciclo"}));
-
-let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
-```
-
-```js
-
-const filtered = propuesta ? search.filter(d => {
-    if(d["Propuesta"] === propuesta){
-      return true
-    }
-      return false }).map(d => d["Cohorte"]) : search.map(d => d["Cohorte"]);
-
-
-const cohortes_a = Array.from(new Set(filtered)).filter(Boolean);
-
-const cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
+let ciclo = view(Inputs.select([null].concat(ciclos_a), {label: "Ciclo", width: 400}));
 
 ```
+
+
+<div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+
+  <div>
+
+  ```js
+  let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta", width:600}));
+  ```
+
+  </div>
+  <div style="margin-left: 50px;">
+
+  ```js
+  let filtered = propuesta ? search.filter(d => {
+      if(d["Propuesta"] === propuesta){
+        return true
+      }
+        return false }).map(d => d["Cohorte"]) : search.map(d => d["Cohorte"]);
+
+
+  let cohortes_a = Array.from(new Set(filtered)).filter(Boolean);
+  let cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
+  ```
+
+  </div>
+</div>
+
+
 
 ```js
 function wrapText(x, w) {
@@ -440,5 +453,14 @@ function drawGantt(data, {width} = {}) {
     font-weight: bold;
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
     margin: 0;
+  }
+
+  label {
+    margin-left: 0px; /* Ajusta este valor para acercar o alejar el label del selector */
+    /* Opcional: si quieres asegurarte de que estén en la misma línea */
+    display: inline-block;
+    /* Opcional: Si el label tiene un ancho fijo y necesitas ajustarlo */
+    width: auto; 
+    text-align: left; /* Esto podría ser útil si quisieras alinear los labels a la derecha dentro de un espacio fijo */
   }
 </style>
