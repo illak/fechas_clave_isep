@@ -41,8 +41,9 @@ const propuestas = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
   const acred_multi = d["Criterio de carga"] === "Carrera - Acred. múltiple";
+  const acred_multi_flex = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible";
 
-  return acred_unica || acred_multi;
+  return acred_unica || acred_multi || acred_multi_flex;
 
 }).map(d => ({"Propuesta": d["Propuesta"], "Cohorte": d["Cohorte"], "id": d["id"]}));
 

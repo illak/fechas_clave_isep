@@ -33,7 +33,7 @@ const data = await getTsv(url);
 
 ```js
 const ifdas_l = [
-  "Simón Bolivar",
+  "Simón Bolívar",
   "Carbó",
   "Leguizamón",
   "Agulla",
@@ -52,6 +52,8 @@ const ifdas_l = [
 ]
 
 const status_l = ["Pendiente", "Cursando"];
+const criterios_uc1 = ["Carrera - Acred. única", "Carrera - Acred. múltiple estructurado flexible"];
+const criterios_uc2 = ["Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
 
 // Fecha actual
 const hoy = new Date();                 
@@ -61,7 +63,8 @@ const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 const dataConAnios = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
-  const uc = d["Criterio de carga"] === "Unidad curricular";
+  //const uc = d["Criterio de carga"] === "Unidad curricular";
+  const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
 
   return acred_unica || uc;
 
@@ -78,7 +81,7 @@ const dataConAnios = data.filter(d => {
   const options = { month: "long" };
 
   const ifdas = {
-    "Simón Bolivar": parseInt(d["Simón Bolívar"]),
+    "Simón Bolívar": parseInt(d["Simón Bolívar"]),
     "Carbó": parseInt(d["Carbó"]),
     "Leguizamón": parseInt(d["Leguizamón"]),
     "Agulla": parseInt(d["Agulla"]),
@@ -296,7 +299,7 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
         Capital
       </div>
       <div class="grid grid-cols-4 contenedor-tarjetas">
-        ${getIFDAPanel("Simón Bolivar", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Simón Bolívar", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Carbó", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Leguizamón", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Agulla", selects_l, ifdas, num_selected)}
