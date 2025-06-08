@@ -104,7 +104,7 @@ const cursada_data = data.filter(d => {
   })();
   
     const ifdas = {
-    "Simón Bolivar": parseInt(d["Simón Bolívar"]),
+    "Simón Bolívar": parseInt(d["Simón Bolívar"]),
     "Carbó": parseInt(d["Carbó"]),
     "Leguizamón": parseInt(d["Leguizamón"]),
     "Agulla": parseInt(d["Agulla"]),
@@ -117,7 +117,7 @@ const cursada_data = data.filter(d => {
     "Iescer": parseInt(d["Iescer"]),
     "Houssay": parseInt(d["Houssay"]),
     "San Martín": parseInt(d["San Martín"]),
-    "Lefebvre": parseInt(d["Lefrebvre"]),
+    "Lefebvre": parseInt(d["Lefebvre"]),
     "Castro": parseInt(d["Castro"]),
     "Menéndez Pidal": parseInt(d["Menéndez Pidal"])
    }
@@ -132,7 +132,7 @@ const cursada_data = data.filter(d => {
     estado: status,
     tipo_ed: tipo_ed,
     ifdas: ifdas,
-    label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"],
+    label: criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"],
     label_tipo_ed: d["Criterio de carga"] === "Carrera - Acred. única" ? "Cursado" : tipo_ed
   };
 });
