@@ -48,11 +48,14 @@ const hoy = new Date();
 const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 
 const status_l = ["Pendiente", "Cursando", "Finalizado"];
+const criterios_uc1 = ["Carrera - Acred. única", "Carrera - Acred. múltiple estructurado flexible"];
+const criterios_uc2 = ["Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
 
 const dataConAnios = data.filter(d => {
 
   const acred_unica = (d["Criterio de carga"] === "Carrera - Acred. única" && d["Inicio de la propuesta"] !== "");
-  const uc = (d["Criterio de carga"] === "Unidad curricular" && d["Inicio de cursado"] !== "");
+  //const uc = (d["Criterio de carga"] === "Unidad curricular" && d["Inicio de cursado"] !== "");
+  const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
 
   return acred_unica || uc;
 
@@ -102,7 +105,8 @@ const dataConAnios = data.filter(d => {
     fecha_fin: new Date(d[fin_col].split("/").reverse().join("-")),
     inicio: formatDate(fecha),
     fin: formatDate(fecha_f),
-    label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"]
+    //label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"]
+    label: criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"]
   };
 });
 

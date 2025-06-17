@@ -33,7 +33,7 @@ const data = await getTsv(url);
 
 ```js
 const ifdas_l = [
-  "Simón Bolivar",
+  "Simón Bolívar",
   "Carbó",
   "Leguizamón",
   "Agulla",
@@ -52,6 +52,8 @@ const ifdas_l = [
 ]
 
 const status_l = ["Pendiente", "Cursando"];
+const criterios_uc1 = ["Carrera - Acred. única", "Carrera - Acred. múltiple estructurado flexible"];
+const criterios_uc2 = ["Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
 
 // Fecha actual
 const hoy = new Date();                 
@@ -61,7 +63,8 @@ const hoySinHora = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 const dataConAnios = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
-  const uc = d["Criterio de carga"] === "Unidad curricular";
+  //const uc = d["Criterio de carga"] === "Unidad curricular";
+  const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
 
   return acred_unica || uc;
 
@@ -78,7 +81,7 @@ const dataConAnios = data.filter(d => {
   const options = { month: "long" };
 
   const ifdas = {
-    "Simón Bolivar": parseInt(d["Simón Bolívar"]),
+    "Simón Bolívar": parseInt(d["Simón Bolívar"]),
     "Carbó": parseInt(d["Carbó"]),
     "Leguizamón": parseInt(d["Leguizamón"]),
     "Agulla": parseInt(d["Agulla"]),
@@ -91,7 +94,7 @@ const dataConAnios = data.filter(d => {
     "Iescer": parseInt(d["Iescer"]),
     "Houssay": parseInt(d["Houssay"]),
     "San Martín": parseInt(d["San Martín"]),
-    "Lefebvre": parseInt(d["Lefrebvre"]),
+    "Lefebvre": parseInt(d["Lefebvre"]),
     "Castro": parseInt(d["Castro"]),
     "Menéndez Pidal": parseInt(d["Menéndez Pidal"])
   }
@@ -152,7 +155,7 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 ```
 
 
-<div class="grid grid-cols-4">
+<div class="grid grid-cols-2">
   <div>
 
 ```js
@@ -160,7 +163,7 @@ const ifdas = view(Inputs.select([null].concat(ifdas_l), {label: "IFDA"}));
 
 const status = view(Inputs.select([null].concat(status_l), {label: "Estado"}));
 
-const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
+const propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta", width:900}));
 ```
   </div>
   <div>
@@ -210,7 +213,77 @@ function wrapText(x, w) {
 }
 ```
 
+
+
 ```js
+function getTotalesCapítal(ifds){
+  let ifds_capital = [
+      "Simón Bolívar",
+      "Carbó",
+      "Leguizamón",
+      "Agulla",
+      "ISEP",
+      "ISPT",
+      "Trettel",
+      "Zípoli"
+    ];
+
+  let sumaTotal = 0;
+
+  ifds.forEach(d => {
+    ifds_capital.forEach(col => {
+      // Verificar si el valor es numérico antes de sumar
+      if (typeof d["ifdas"][col] === 'number' && !isNaN(d["ifdas"][col])) {
+        sumaTotal += d["ifdas"][col];
+      }
+    });
+  });
+
+
+  return htl.html`<div>
+        <div class="card">
+          <h4>Capital</h4>  <h1>${sumaTotal}</h1>
+        </div>`
+}
+
+function getTotalesInterior(ifds){
+  let ifds_interior = [
+      "Carena",
+      "Urquiza",
+      "Iescer",
+      "Houssay",
+      "San Martín",
+      "Lefebvre",
+      "Castro",
+      "Menéndez Pidal"
+    ];
+
+  let sumaTotal = 0;
+
+  ifds.forEach(d => {
+    ifds_interior.forEach(col => {
+      // Verificar si el valor es numérico antes de sumar
+      if (typeof d["ifdas"][col] === 'number' && !isNaN(d["ifdas"][col])) {
+        sumaTotal += d["ifdas"][col];
+      }
+    });
+  });
+
+
+  return htl.html`<div>
+        <div class="card">
+          <h4>Interior</h4>  <h1>${sumaTotal}</h1>
+        </div>`
+}
+
+
+function getTotales(ifds){
+  return htl.html`<div>
+        <div class="card">
+          <h4>Total de aulas</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS"])}</h1>
+        </div>`
+}
+
 function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
   if(ifdas===ifda || d3.sum(ifda_sel, (d) => d[ifda]) > 0){
     return htl.html`<div>
@@ -286,17 +359,25 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
     },
     layout: "auto",
     rows: 30,
-    height: 580,
+    height: 670,
     width: "auto",  
 }))
 ```
   </div>
   <div>
+      <h2>
+      Cantidades de aulas por IFDA
+      </h2>
+      <div class="grid grid-cols-3">
+        <div>${getTotalesCapítal(selects_l)}</div>
+        <div>${getTotalesInterior(selects_l)}</div>
+        <div>${getTotales(selects_l)}</div>
+      </div>
       <div class="rectangulo">
         Capital
       </div>
       <div class="grid grid-cols-4 contenedor-tarjetas">
-        ${getIFDAPanel("Simón Bolivar", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Simón Bolívar", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Carbó", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Leguizamón", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Agulla", selects_l, ifdas, num_selected)}
