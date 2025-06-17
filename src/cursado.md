@@ -299,7 +299,7 @@ d3.timeFormatDefaultLocale(localeES);
 ```js
 const parser = d3.timeParse("%d/%m/%Y");
 
-const uc_gantt_data = search.filter(d => {
+const uc_gantt_data = dataConAnios.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
@@ -308,14 +308,16 @@ const uc_gantt_data = search.filter(d => {
     const filtrarPorEstado = status ? d["estado"] === status : true;*/
     const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
     const filtrarPorCohorte = cohorte ? d["Cohorte"] === cohorte : true;
+    const filtrarPorCiclo = ciclo ? d["Ciclo"] === ciclo : true;
 
     // Retornar solo las filas que cumplen con los filtros activos
     //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
-    return filtrarPorPropuesta && filtrarPorCohorte
+    return filtrarPorPropuesta && filtrarPorCohorte && filtrarPorCiclo;
   
   }).map(d => {
 
-  const prop = d["Criterio de carga"] ===  "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"];
+  //const prop = d["Criterio de carga"] ===  "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"];
+  const prop = criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"];
   const propuesta = d["Propuesta"];
   const cohorte = d["Cohorte"];
   const tipo = d["Criterio de carga"];
@@ -346,7 +348,8 @@ const domainByDate = uc_gantt_data.sort((a, b) => d3.ascending(a.startDate, b.st
 
 const myColors = [
             {tipo: "Carrera - Acred. única", color: "gold"},
-            {tipo: "Carrera - Acred. múltiple", color: "#CEC0D0"}
+            {tipo: "Carrera - Acred. múltiple", color: "#CEC0D0"},
+            {tipo: "Carrera - Acred. múltiple estructurado flexible", color: "#005D6A"}
             ]
 
 const colorMap = new Map(myColors.map((obj) => [obj.tipo, obj.color]));
