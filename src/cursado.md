@@ -149,11 +149,12 @@ const semestre_a = Array.from(new Set(semestres)).filter(Boolean);
 let ciclo = view(Inputs.select([null].concat(ciclos_a), {label: "Ciclo"}));
 
 let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta"}));
+
 ```
 
 ```js
 
-const filtered = propuesta ? search.filter(d => {
+let filtered = propuesta ? search.filter(d => {
     if(d["Propuesta"] === propuesta){
       return true
     }
@@ -162,9 +163,11 @@ const filtered = propuesta ? search.filter(d => {
 
 const cohortes_a = Array.from(new Set(filtered)).filter(Boolean);
 
-const cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
+let cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
 
 ```
+
+
 
 ```js
 function wrapText(x, w) {
