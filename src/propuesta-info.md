@@ -40,7 +40,7 @@ function getLink(link, text){
 const propuestas = data.filter(d => {
 
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
-  const acred_multi = d["Criterio de carga"] === "Carrera - Acred. múltiple";
+  const acred_multi = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado";
   const acred_multi_flex = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible";
 
   return acred_unica || acred_multi || acred_multi_flex;
@@ -52,8 +52,9 @@ const propuesta_obj = view(
     propuestas,
     {
       label: "Propuesta",
+      value: propuestas.find((p) => p["id"] === id),
       format: (t) => t["Propuesta"] + " (" + t["Cohorte"] + ")",
-      value: propuestas.find((p) => p["id"] === id)
+      width: 600
     }
   )
 );
@@ -61,7 +62,7 @@ const propuesta_obj = view(
 
 ```js
 const propuesta_data = data.filter(d => {
-    return d["id"] === propuesta_obj["id"];  
+    return d["id"] === propuesta_obj["id"];
   })[0];
 
 const link = propuesta_data["Documento de la propuesta"];
