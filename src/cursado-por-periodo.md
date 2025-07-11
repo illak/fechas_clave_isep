@@ -278,7 +278,8 @@ const uc_gantt_data = dataConAnios.filter(d => {
   
   }).map(d => {
 
-  const prop = d["Criterio de carga"] ===  "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"];
+  //const prop = d["Criterio de carga"] ===  "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"];
+  const prop = criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"];
   const propuesta = d["Propuesta"];
   const cohorte = d["Cohorte"];
   const tipo = d["Criterio de carga"];

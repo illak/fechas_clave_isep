@@ -156,7 +156,10 @@ let ciclo = view(Inputs.select([null].concat(ciclos_a), {label: "Ciclo", width: 
   <div>
 
   ```js
-  let propuesta = view(Inputs.select([null].concat(propuestas_a), {label: "Propuesta", width:600}));
+
+  let propuestas_b = ciclo ? search.filter(d => d["Ciclo"] === ciclo).map(d => d["Propuesta"]) : propuestas_a;
+
+  let propuesta = view(Inputs.select([null].concat(propuestas_b), {label: "Propuesta", width:600}));
   ```
 
   </div>
