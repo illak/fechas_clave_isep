@@ -142,8 +142,8 @@ function wrapTextLink(x, w, href) {
 }
 ```
 
-
 ```js
+
 Inputs.table(dataConAnios.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     //const filtrarPorAnio = anios ? d["anio"] === anios : true;
@@ -165,8 +165,8 @@ Inputs.table(dataConAnios.filter(d => {
     columns: [
       "id",
       "Cohorte",
-      "Inicio de la propuesta",
-      "Fin de la propuesta",
+      "inicio_prop",
+      "fin_prop",
       //"propuesta: Tipo de inscripción"
     ],
     header: {
@@ -181,7 +181,9 @@ Inputs.table(dataConAnios.filter(d => {
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
         const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
         return wrapTextLink(propuesta, 290, link)
-      }
+      },
+      inicio_prop: inicio_prop => inicio_prop.toLocaleDateString("es-AR"),
+      fin_prop: fin_prop => fin_prop.toLocaleDateString("es-AR")
     },
     layout: "auto",
     rows: 10,

@@ -125,7 +125,9 @@ const dataConAnios = data.filter(d => {
     semestre: fecha.getMonth() < 6? "Primer semestre" : "Segundo semestre",
     ifdas: ifdas,
     estado: status,
-    tipo_ed: tipo_ed
+    tipo_ed: tipo_ed,
+    inicio: fecha,
+    fin: fecha_f
   };
 }).filter(d => d["estado"] === "Pendiente" || d["estado"] === "Cursando");
 
@@ -339,8 +341,10 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
       "Propuesta",
       "Nombre del módulo",
       "Cohorte",
-      "Inicio de cursado",
-      "Cierre de cursado",
+      //"Inicio de cursado",
+      //"Cierre de cursado",
+      "inicio",
+      "fin",
       "TOTAL DE AULAS",
     ],
     header: {
@@ -349,12 +353,16 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
       "Propuesta": "Propuesta formativa",
       "Momento en el que se ofrece": "Tipo de edición",
       "TOTAL DE AULAS": "# Aulas",
+      "inicio": "Inicio de cursado",
+      "fin": "Cierre de cursado"
     },
     format: {
         "Propuesta": (d) => wrapText(d,250),
         "Nombre del módulo": (d) => wrapText(d,150),
-        "Inicio de cursado": (d) => wrapText(d),
-        "Cierre de cursado": (d) => wrapText(d),
+        //"Inicio de cursado": (d) => wrapText(d),
+        //"Cierre de cursado": (d) => wrapText(d),
+        "inicio": (d) => d.toLocaleDateString("es-AR"),
+        "fin": (d) => d.toLocaleDateString("es-AR"),
         "TOTAL DE AULAS": (d) => centerText(d),
     },
     layout: "auto",

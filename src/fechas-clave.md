@@ -48,8 +48,12 @@ const dataConAnios = data.filter(d => {
     ? new Date(d["Inscripción: inicio"].split("/").reverse().join("-"))
     : null;
 
-  console.log(d);
-  console.log(fecha);
+    const fecha_f = d["Inscripción: fin"]
+    ? new Date(d["Inscripción: fin"].split("/").reverse().join("-"))
+    : null;
+
+  //console.log(d);
+  //console.log(fecha);
   
 
   const options = { month: "long" };
@@ -59,7 +63,9 @@ const dataConAnios = data.filter(d => {
     ...d, // Mantener las columnas existentes
     anio: fecha ? fecha.getFullYear() : null, // Agregar el año como una nueva clave
     mes: new Intl.DateTimeFormat("es-Es", options).format(fecha),
-    mes_idx: fecha.getMonth()
+    mes_idx: fecha.getMonth(),
+    inicio: fecha,
+    fin: fecha_f
   };
 });
 ```
@@ -147,13 +153,17 @@ Inputs.table(search.filter(d => {
     columns: [
       "id",
       "Cohorte",
-      "Inscripción: inicio",
-      "Inscripción: fin",
+      //"Inscripción: inicio",
+      //"Inscripción: fin",
+      "inicio",
+      "fin",
       "propuesta: Tipo de inscripción"
     ],
     header: {
       "id": "Propuesta",
-      "propuesta: Tipo de inscripción": "Tipo de inscripción"
+      "propuesta: Tipo de inscripción": "Tipo de inscripción",
+      "inicio": "Inscripción: inicio",
+      "fin": "Inscripción: fin"
     },
     format: {
       id: id => {
@@ -164,7 +174,9 @@ Inputs.table(search.filter(d => {
         const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
         return wrapTextLink(propuesta, 250, link)
 
-      }
+      },
+      inicio: inicio => inicio.toLocaleDateString("es-AR"),
+      fin: fin => fin.toLocaleDateString("es-AR")
     },
     layout: "auto",
     rows: 10,

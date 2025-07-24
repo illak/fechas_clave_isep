@@ -103,8 +103,10 @@ const dataConAnios = data.filter(d => {
     tipo_ed: tipo_ed,
     fecha_inicio: new Date(d[inicio_col].split("/").reverse().join("-")),
     fecha_fin: new Date(d[fin_col].split("/").reverse().join("-")),
-    inicio: formatDate(fecha),
-    fin: formatDate(fecha_f),
+    //inicio: formatDate(fecha),
+    //fin: formatDate(fecha_f),
+    inicio: fecha,
+    fin: fecha_f,
     //label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"]
     label: criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"]
   };
@@ -220,7 +222,9 @@ Inputs.table(dataConAnios.filter(d => {
         const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";
 
         return wrapTextLink(uc, 250, pre_link + id)
-      }
+      },
+      inicio: inicio => inicio.toLocaleDateString("es-AR"),
+      fin: fin => fin.toLocaleDateString("es-AR")
     },
     layout: "auto",
     rows: 30,
@@ -234,7 +238,7 @@ Inputs.table(dataConAnios.filter(d => {
 
 ```js
 const settings = {
-      plotHeight: 900,
+      plotHeight: 1200,
       plotWidth: 900,
       barHeight: 12,
       textPosition: 0,
@@ -283,8 +287,10 @@ const uc_gantt_data = dataConAnios.filter(d => {
   const propuesta = d["Propuesta"];
   const cohorte = d["Cohorte"];
   const tipo = d["Criterio de carga"];
-  const startDate = parser(d["inicio"]);//parser(d["Inicio de cursado"]);//.split("/"));//.reverse().join("-"));
-  const endDate = parser(d["fin"]);//parser(d["Cierre de cursado"]);//.split("/"));//.reverse().join("-"));
+  //const startDate = parser(d["inicio"]);//parser(d["Inicio de cursado"]);//.split("/"));//.reverse().join("-"));
+  //const endDate = parser(d["fin"]);//parser(d["Cierre de cursado"]);//.split("/"));//.reverse().join("-"));
+  const startDate = d["inicio"];
+  const endDate = d["fin"];
   const id = d["id"];
   const anio = d["anio"];
   const mes = d["mes"];
