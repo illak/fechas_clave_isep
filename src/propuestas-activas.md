@@ -133,7 +133,6 @@ function wrapTextLink(x, w, href) {
       target=_blank
       style=" display: block;
       text-align: center;
-      font: 12px/1.6 var(--sans-serif);
       word-wrap: break-word;
       overflow-wrap: break-word;
       white-space: normal;
@@ -353,6 +352,30 @@ function drawGantt(data, {width} = {}) {
 
 
 <style>
+  /* style.css */
+  /* Aumentar tamaño de texto en todas las tablas */
+  table {
+    font-size: 1.1rem; /* Ajusta según necesites */
+  }
+
+  /* Específico para celdas de tabla */
+  td, th {
+    font-size: 1.3rem;
+    line-height: 1.4; /* Mejora la legibilidad */
+  }
+
+  /* Solo para el contenido de las celdas */
+  table td {
+    font-size: 1rem;
+  }
+
+  /* Solo para los encabezados */
+  table th {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+
   .hero {
     display: flex;
     flex-direction: column;
