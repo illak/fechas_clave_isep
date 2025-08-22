@@ -91,6 +91,25 @@ const dataConAnios = data.filter(d => {
     }
     return d["Momento en el que se ofrece"];
   })();
+
+   const ifdas = {
+    "Simón Bolívar": parseInt(d["Simón Bolívar"]),
+    "Carbó": parseInt(d["Carbó"]),
+    "Leguizamón": parseInt(d["Leguizamón"]),
+    "Agulla": parseInt(d["Agulla"]),
+    "ISEP": parseInt(d["ISEP"]),
+    "ISPT": parseInt(d["ISPT"]),
+    "Trettel": parseInt(d["Trettel"]),
+    "Zípoli": parseInt(d["Zípoli"]),
+    "Carena": parseInt(d["Carena"]),
+    "Urquiza": parseInt(d["Urquiza"]),
+    "Iescer": parseInt(d["Iescer"]),
+    "Houssay": parseInt(d["Houssay"]),
+    "San Martín": parseInt(d["San Martín"]),
+    "Lefebvre": parseInt(d["Lefebvre"]),
+    "Castro": parseInt(d["Castro"]),
+    "Menéndez Pidal": parseInt(d["Menéndez Pidal"])
+  }
   
   // Retornar una nueva fila con una columna adicional "año"
   return {
@@ -108,7 +127,8 @@ const dataConAnios = data.filter(d => {
     inicio: fecha,
     fin: fecha_f,
     //label: d["Criterio de carga"] === "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"]
-    label: criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"]
+    label: criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"],
+    ifdas: ifdas
   };
 });
 
@@ -173,32 +193,40 @@ function wrapTextLink(x, w, href) {
 }
 ```
 
-
 ```js
-
-
-Inputs.table(dataConAnios.filter(d => {
-    // Filtrar dinámicamente según los valores de `anios` y `mes`
-    /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
-    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorEstado = status ? d["estado"] === status : true;*/
-
-    const filtroPeriodo = d["fecha_fin"] >= start && d["fecha_inicio"] <= end;
+  const dataFiltered = dataConAnios.filter(d => {
+      const filtroPeriodo = d["fecha_fin"] >= start && d["fecha_inicio"] <= end;
 
     // Retornar solo las filas que cumplen con los filtros activos
     //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
     return filtroPeriodo;
   
-  }), {
+  })
+```
+
+
+
+<div class="grid grid-cols-4">
+  <div class="card grid-colspan-3">
+
+```js
+const ifdas = null;
+
+const selects = view(Inputs.table(dataFiltered, {
     columns: [
       "id",
       "Criterio de carga",
       "Propuesta",
+      "Apertura de aula",
       "inicio",
+      "Cierre de actividades",
       "fin",
-      "tipo_ed"
+      "tipo_ed",
+      "Cantidad de encuentros sincrónicos",	
+      "Asistencia mínima obligatoria",
+      "A cargo del registro de asistencia",
+      "Tipo de agrupamiento",
+      "Detalle del agrupamiento personalizado"
     ],
     header: {
       "id": "Cursado de",
@@ -206,10 +234,13 @@ Inputs.table(dataConAnios.filter(d => {
       "Propuesta": "Propuesta formativa",
       "inicio": "Inicio de cursado",
       "fin": "Cierre de cursado",
-      "tipo_ed": "Tipo de edición"
+      "tipo_ed": "Tipo de edición",
+      "Cantidad de encuentros sincrónicos": "# encuentros"
     },
     format: {
       "Propuesta": (d) => wrapText(d, 220),
+      "Criterio de carga" : (d) => wrapText(d, 150),
+      "tipo_ed": (d) => wrapText(d, 150),
       //"id": (d) => wrapText(d,220),
       id: id => {
        const uc = dataConAnios.filter(d => d.id===id)[0]["label"];
@@ -222,16 +253,147 @@ Inputs.table(dataConAnios.filter(d => {
         return wrapTextLink(uc, 250, pre_link + id)
       },
       inicio: inicio => inicio.toLocaleDateString("es-AR"),
-      fin: fin => fin.toLocaleDateString("es-AR")
+      fin: fin => fin.toLocaleDateString("es-AR"),
+      "Detalle del agrupamiento personalizado": (link) => link ? wrapTextLink("🔗Documento", 250, link) : ""
     },
     layout: "auto",
     rows: 30,
-    height: 400,
+    height: 650,
     width: "auto",  
-})
+}))
 
 
 ```
+  </div>
+  <div>
+      <div class="grid grid-cols-4">
+        <div class="card">${getTotalesCapítal(selects_l)}</div>
+        <div class="card">${getTotalesInterior(selects_l)}</div>
+        <div class="card">${getTotalesANA(selects_l)}</div>
+        <div class="card">${getTotales(selects_l)}</div>
+      </div>
+      <h2>
+      Cantidades de aulas por IFDA
+      </h2>
+      <div class="rectangulo">
+        Capital
+      </div>
+      <div class="grid grid-cols-4 contenedor-tarjetas">
+        ${getIFDAPanel("Simón Bolívar", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Carbó", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Leguizamón", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Agulla", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("ISEP", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("ISPT", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Trettel", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Zípoli", selects_l, ifdas, num_selected)}
+      </div>
+      <div class="rectangulo">
+        Interior
+      </div>
+      <div class="grid grid-cols-4 contenedor-tarjetas">
+        ${getIFDAPanel("Carena", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Urquiza", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Houssay", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("San Martín", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Iescer", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Lefebvre", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Castro", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Menéndez Pidal", selects_l, ifdas, num_selected)}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+```js
+const ids = selects.map(d => d.id);
+const selects_l = dataFiltered.filter(d => ids.includes(d.id));
+const num_selected = ids.length;
+```
+
+
+
+```js
+// FUNCIONES AUXILIARES
+function getTotalesCapítal(ifds){
+  let ifds_capital = [
+      "Simón Bolívar",
+      "Carbó",
+      "Leguizamón",
+      "Agulla",
+      "ISEP",
+      "ISPT",
+      "Trettel",
+      "Zípoli"
+    ];
+
+  let sumaTotal = 0;
+
+  ifds.forEach(d => {
+    ifds_capital.forEach(col => {
+      // Verificar si el valor es numérico antes de sumar
+      if (typeof d["ifdas"][col] === 'number' && !isNaN(d["ifdas"][col])) {
+        sumaTotal += d["ifdas"][col];
+      }
+    });
+  });
+
+
+  return htl.html`<h4>Capital</h4>  <h1>${sumaTotal}</h1>`
+}
+
+function getTotalesInterior(ifds){
+  let ifds_interior = [
+      "Carena",
+      "Urquiza",
+      "Iescer",
+      "Houssay",
+      "San Martín",
+      "Lefebvre",
+      "Castro",
+      "Menéndez Pidal"
+    ];
+
+  let sumaTotal = 0;
+
+  ifds.forEach(d => {
+    ifds_interior.forEach(col => {
+      // Verificar si el valor es numérico antes de sumar
+      if (typeof d["ifdas"][col] === 'number' && !isNaN(d["ifdas"][col])) {
+        sumaTotal += d["ifdas"][col];
+      }
+    });
+  });
+
+
+  return htl.html`<h4>Interior</h4>  <h1>${sumaTotal}</h1>`
+}
+
+
+function getTotalesANA(ifds){
+    return htl.html`<h4>Total de aulas N/A</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1>`
+}
+
+
+function getTotales(ifds){
+  return htl.html`<h4>Total de aulas</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS"] + +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1>`
+}
+
+function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
+  if(ifdas===ifda || d3.sum(ifda_sel, (d) => d[ifda]) > 0){
+    return htl.html`<div>
+        <div class="card" style="background-color:#EDE4C5;">
+          <h4>${ifda}</h4>  ${d3.sum(ifda_sel, (d) => d[ifda])}
+        </div>`
+  }
+  return htl.html`<div>
+        <div class="card">
+          <h2>${ifda}</h2>  ${d3.sum(ifda_sel, (d) => d[ifda])}
+        </div>`
+}
+```
+
 
 
 ```js
@@ -415,13 +577,13 @@ function drawGantt(data, {width} = {}) {
 
   /* Específico para celdas de tabla */
   td, th {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     line-height: 1.4; /* Mejora la legibilidad */
   }
 
   /* Solo para el contenido de las celdas */
   table td {
-    font-size: 1rem;
+    font-size: 1.0rem;
   }
 
   /* Solo para los encabezados */
@@ -447,5 +609,38 @@ function drawGantt(data, {width} = {}) {
     font-weight: bold;
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
     margin: 0;
+  }
+
+
+  .card1 {
+  background-color: "#4287f5";
+  }
+
+  .card {
+    margin: 1px;
+  }
+
+  .wrap-header{
+      width: 150px; /* Ajusta el ancho según sea necesario */
+      word-wrap: break-word; /* Permite que las palabras se partan */
+      white-space: normal; /* Permite que el texto use varias líneas */
+      text-align: center; /* Opcional, para centrar el texto */
+  }
+
+  .rectangulo {
+      width: 100%; /* Extiende el rectángulo al ancho completo del contenedor */
+      background-color: #333; /* Fondo gris oscuro */
+      color: white; /* Texto blanco */
+      text-align: center; /* Centra el texto horizontalmente */
+      padding: 2px; /* Espaciado interno */
+      box-sizing: border-box; /* Incluye el padding en el ancho total */
+      font-size: 20px; /* Tamaño del texto */
+      margin-bottom: 10px; /* Espaciado entre los rectángulos */
+      border-radius: 10px; /* Esquinas redondeadas */
+  }
+
+  .contenedor-tarjetas {
+      display: grid;
+      gap: 5px; /* Reduce el espacio entre las tarjetas */
   }
 </style>
