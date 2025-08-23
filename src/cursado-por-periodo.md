@@ -217,16 +217,26 @@ function wrapTextLink(x, w, href) {
   function toggleCard() {
       const card = document.getElementById('infoCard');
       card.classList.toggle('hidden');
+
+      const divTabla = document.getElementById('tabla');
+
+      if (divTabla.classList.contains('grid-colspan-3')) {
+        divTabla.classList.remove('grid-colspan-3');
+        divTabla.classList.add('grid-colspan-4');
+      } else {
+        divTabla.classList.remove('grid-colspan-4');
+        divTabla.classList.add('grid-colspan-3');
+      }
   }
 
-  const ocultar_panel_izq = view(Inputs.button("Ocultar panel izquierdo", {value: null, reduce: () => toggleCard()}))
+  const ocultar_panel_izq = view(Inputs.button("Ocultar/visualizar panel derecho", {value: null, reduce: () => toggleCard()}))
 
 ```
 
 
 
-<div class="grid grid-cols-4">
-  <div class="card grid-colspan-3">
+<div class="grid grid-cols-4" >
+  <div class="card grid-colspan-3" id="tabla">
 
 ```js
   const ifdas = null;
@@ -671,6 +681,7 @@ function drawGantt(data, {width} = {}) {
   }
 
   .collapsible-card.hidden {
+      display: none;
       width: 0;
       padding: 0;
       margin: 0;
