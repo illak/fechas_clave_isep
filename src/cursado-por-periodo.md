@@ -166,6 +166,8 @@ const ultimoDiaAnio = new Date(hoy.getFullYear(), 11, 31); // Diciembre es el me
 const start = view(Inputs.date({label: "Desde", value: primerDiaAnio}));
 const end = view(Inputs.date({label: "Hasta",  value: ultimoDiaAnio}));
 
+const inicios_en_periodo = view(Inputs.toggle({label: "Sólo inicios de cursada en el periodo"}));
+
 ```
 
 ```js
@@ -195,7 +197,14 @@ function wrapTextLink(x, w, href) {
 
 ```js
   const dataFiltered = dataConAnios.filter(d => {
-      const filtroPeriodo = d["fecha_fin"] >= start && d["fecha_inicio"] <= end;
+
+    if(inicios_en_periodo){
+      console.log(inicios_en_periodo)
+      const filtroPeriodo = d["inicio"] >= start && d["inicio"] <= end;
+      return filtroPeriodo;
+    }
+    
+    const filtroPeriodo = d["fecha_fin"] >= start && d["fecha_inicio"] <= end;
 
     // Retornar solo las filas que cumplen con los filtros activos
     //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
@@ -204,68 +213,77 @@ function wrapTextLink(x, w, href) {
   })
 ```
 
+```js
+  function toggleCard() {
+      const card = document.getElementById('infoCard');
+      card.classList.toggle('hidden');
+  }
+
+  const ocultar_panel_izq = view(Inputs.button("Ocultar panel izquierdo", {value: null, reduce: () => toggleCard()}))
+
+```
+
 
 
 <div class="grid grid-cols-4">
   <div class="card grid-colspan-3">
 
 ```js
-const ifdas = null;
+  const ifdas = null;
 
-const selects = view(Inputs.table(dataFiltered, {
-    columns: [
-      "id",
-      "Criterio de carga",
-      "Propuesta",
-      "Apertura de aula",
-      "inicio",
-      "Cierre de actividades",
-      "fin",
-      "tipo_ed",
-      "Cantidad de encuentros sincrónicos",	
-      "Asistencia mínima obligatoria",
-      "A cargo del registro de asistencia",
-      "Tipo de agrupamiento",
-      "Detalle del agrupamiento personalizado"
-    ],
-    header: {
-      "id": "Cursado de",
-      "Criterio de carga": "Tipología",
-      "Propuesta": "Propuesta formativa",
-      "inicio": "Inicio de cursado",
-      "fin": "Cierre de cursado",
-      "tipo_ed": "Tipo de edición",
-      "Cantidad de encuentros sincrónicos": "# encuentros"
-    },
-    format: {
-      "Propuesta": (d) => wrapText(d, 220),
-      "Criterio de carga" : (d) => wrapText(d, 150),
-      "tipo_ed": (d) => wrapText(d, 150),
-      //"id": (d) => wrapText(d,220),
-      id: id => {
-       const uc = dataConAnios.filter(d => d.id===id)[0]["label"];
-        const criterio = dataConAnios.filter(d => d.id===id)[0]["Criterio de carga"];
-        //display(propuesta)
-        //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
-        const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";
-
-        return wrapTextLink(uc, 250, pre_link + id)
+  const selects = view(Inputs.table(dataFiltered, {
+      columns: [
+        "id",
+        "Criterio de carga",
+        "Propuesta",
+        "Apertura de aula",
+        "inicio",
+        "Cierre de actividades",
+        "fin",
+        "tipo_ed",
+        "Cantidad de encuentros sincrónicos",	
+        "Asistencia mínima obligatoria",
+        "A cargo del registro de asistencia",
+        "Tipo de agrupamiento",
+        "Detalle del agrupamiento personalizado"
+      ],
+      header: {
+        "id": "Cursado de",
+        "Criterio de carga": "Tipología",
+        "Propuesta": "Propuesta formativa",
+        "inicio": "Inicio de cursado",
+        "fin": "Cierre de cursado",
+        "tipo_ed": "Tipo de edición",
+        "Cantidad de encuentros sincrónicos": "# encuentros"
       },
-      inicio: inicio => inicio.toLocaleDateString("es-AR"),
-      fin: fin => fin.toLocaleDateString("es-AR"),
-      "Detalle del agrupamiento personalizado": (link) => link ? wrapTextLink("🔗Documento", 250, link) : ""
-    },
-    layout: "auto",
-    rows: 30,
-    height: 650,
-    width: "auto",  
-}))
+      format: {
+        "Propuesta": (d) => wrapText(d, 220),
+        "Criterio de carga" : (d) => wrapText(d, 150),
+        "tipo_ed": (d) => wrapText(d, 150),
+        //"id": (d) => wrapText(d,220),
+        id: id => {
+        const uc = dataConAnios.filter(d => d.id===id)[0]["label"];
+          const criterio = dataConAnios.filter(d => d.id===id)[0]["Criterio de carga"];
+          //display(propuesta)
+          //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
+          //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
+          const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";
 
-
+          return wrapTextLink(uc, 250, pre_link + id)
+        },
+        inicio: inicio => inicio.toLocaleDateString("es-AR"),
+        fin: fin => fin.toLocaleDateString("es-AR"),
+        "Detalle del agrupamiento personalizado": (link) => link ? wrapTextLink("🔗Documento", 250, link) : ""
+      },
+      layout: "auto",
+      rows: 30,
+      height: 650,
+      width: "auto",  
+  }))
 ```
+
   </div>
-  <div>
+  <div class="collapsible-card" id="infoCard">
       <div class="grid grid-cols-4">
         <div class="card">${getTotalesCapítal(selects_l)}</div>
         <div class="card">${getTotalesInterior(selects_l)}</div>
@@ -382,13 +400,11 @@ function getTotales(ifds){
 
 function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
   if(ifdas===ifda || d3.sum(ifda_sel, (d) => d[ifda]) > 0){
-    return htl.html`<div>
-        <div class="card" style="background-color:#EDE4C5;">
+    return htl.html`<div class="card" style="background-color:#EDE4C5;">
           <h4>${ifda}</h4>  ${d3.sum(ifda_sel, (d) => d[ifda])}
         </div>`
   }
-  return htl.html`<div>
-        <div class="card">
+  return htl.html`<div class="card">
           <h2>${ifda}</h2>  ${d3.sum(ifda_sel, (d) => d[ifda])}
         </div>`
 }
@@ -427,20 +443,7 @@ d3.timeFormatDefaultLocale(localeES);
 ```js
 const parser = d3.timeParse("%d/%m/%Y");
 
-const uc_gantt_data = dataConAnios.filter(d => {
-    // Filtrar dinámicamente según los valores de `anios` y `mes`
-    /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
-    const filtrarPorMes = mes ? d["mes"] === mes : true;
-    const filtrarPorSemestre = semestre ? d["semestre"] === semestre : true;
-    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
-    const filtrarPorEstado = status ? d["estado"] === status : true;*/
-    const filtroPeriodo = d["fecha_fin"] >= start && d["fecha_inicio"] <= end;
-
-    // Retornar solo las filas que cumplen con los filtros activos
-    //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
-    return filtroPeriodo;
-  
-  }).map(d => {
+const uc_gantt_data = dataFiltered.map(d => {
 
   //const prop = d["Criterio de carga"] ===  "Carrera - Acred. única" ? d["Propuesta"] : d["Nombre del módulo"];
   const prop = criterios_uc1.includes(d["Criterio de carga"]) ? d["Propuesta"] : d["Nombre del módulo"];
@@ -643,4 +646,35 @@ function drawGantt(data, {width} = {}) {
       display: grid;
       gap: 5px; /* Reduce el espacio entre las tarjetas */
   }
+
+
+
+  .toggle-btn {
+    --position: fixed;
+    right: 20px;
+    top: 250px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+  }
+
+  /* Nueva clase collapsible-card */
+  .collapsible-card {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      overflow: hidden;
+  }
+
+  .collapsible-card.hidden {
+      width: 0;
+      padding: 0;
+      margin: 0;
+      opacity: 0;
+  }
 </style>
+
