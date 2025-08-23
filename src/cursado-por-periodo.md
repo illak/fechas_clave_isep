@@ -199,7 +199,6 @@ function wrapTextLink(x, w, href) {
   const dataFiltered = dataConAnios.filter(d => {
 
     if(inicios_en_periodo){
-      console.log(inicios_en_periodo)
       const filtroPeriodo = d["inicio"] >= start && d["inicio"] <= end;
       return filtroPeriodo;
     }
