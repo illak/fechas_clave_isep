@@ -242,10 +242,7 @@ function getTotalesCapítal(ifds){
   });
 
 
-  return htl.html`<div>
-        <div class="card">
-          <h4>Capital</h4>  <h1>${sumaTotal}</h1>
-        </div>`
+  return htl.html`<h4>Capital</h4>  <h1>${sumaTotal}</h1>`
 }
 
 function getTotalesInterior(ifds){
@@ -272,29 +269,25 @@ function getTotalesInterior(ifds){
   });
 
 
-  return htl.html`<div>
-        <div class="card">
-          <h4>Interior</h4>  <h1>${sumaTotal}</h1>
-        </div>`
+  return htl.html`<h4>Interior</h4>  <h1>${sumaTotal}</h1>`
 }
 
 
+function getTotalesANA(ifds){
+    return htl.html`<h4>Total de aulas N/A</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1>`
+}
+
 function getTotales(ifds){
-  return htl.html`<div>
-        <div class="card">
-          <h4>Total de aulas</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS"])}</h1>
-        </div>`
+  return htl.html`<h4>Total de aulas</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS"] + +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1>`
 }
 
 function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
   if(ifdas===ifda || d3.sum(ifda_sel, (d) => d[ifda]) > 0){
-    return htl.html`<div>
-        <div class="card" style="background-color:#EDE4C5;">
+    return htl.html`<div class="card" style="background-color:#EDE4C5;">
           <h4>${ifda}</h4>  ${d3.sum(ifda_sel, (d) => d[ifda])}
         </div>`
   }
-  return htl.html`<div>
-        <div class="card">
+  return htl.html`<div class="card">
           <h2>${ifda}</h2>  ${d3.sum(ifda_sel, (d) => d[ifda])}
         </div>`
 }
@@ -376,10 +369,11 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
       <h2>
       Cantidades de aulas por IFDA
       </h2>
-      <div class="grid grid-cols-3">
-        <div>${getTotalesCapítal(selects_l)}</div>
-        <div>${getTotalesInterior(selects_l)}</div>
-        <div>${getTotales(selects_l)}</div>
+      <div class="grid grid-cols-4">
+        <div class="card">${getTotalesCapítal(selects_l)}</div>
+        <div class="card">${getTotalesInterior(selects_l)}</div>
+        <div class="card">${getTotalesANA(selects_l)}</div>
+        <div class="card">${getTotales(selects_l)}</div>
       </div>
       <div class="rectangulo">
         Capital
