@@ -1,7 +1,5 @@
 ---
-theme: [dashboard, light]
-title: Inscripciones
-toc: false
+i
 ---
 
 <div style="text-align: center;">
@@ -70,6 +68,9 @@ const dataConAnios = data.filter(d => {
 });
 ```
 
+<div class="grid grid-cols-2">
+
+<div>
 
 ```js
 
@@ -106,10 +107,22 @@ const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo 
 const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…", locale: "es"}));
 ```
 
-
-<div>
-A continuación, podrás observar algunos datos de la prematriculación del período o propuesta/s seleccionada/s. Haciendo clic en cada propuesta, verás todos los datos de su prematriculación:
 </div>
+<div class="grid grid-cols-3">
+  <div class="card grid-colspan-3"><h2>Cantidad total de propuestas</h2><h1>${d3.count(dataFiltered, (d) => d["id"])}</h1></div>
+  <div class="card"><h2>Acred. única</h2>
+    <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. única"), (d) => d["id"])}</h1>
+  </div>
+  <div class="card"><h2>Acred. múltiple estructurado</h2>
+    <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado"), (d) => d["id"])}</h1>
+  </div>
+  <div class="card"><h2>Carrera - Acred. múltiple estructurado flexible</h2>
+    <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible"), (d) => d["id"])}</h1>
+  </div>
+</div>
+
+</div>
+
 
 ```js
 function wrapText(x, w) {
@@ -136,9 +149,13 @@ function wrapTextLink(x, w, href) {
 }
 ```
 
+<div>
+A continuación, podrás observar algunos datos de la prematriculación del período o propuesta/s seleccionada/s. Haciendo clic en cada propuesta, verás todos los datos de su prematriculación:
+</div>
+
 ```js
 
-Inputs.table(search.filter(d => {
+const dataFiltered = search.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
@@ -147,7 +164,10 @@ Inputs.table(search.filter(d => {
     // Retornar solo las filas que cumplen con los filtros activos
     return filtrarPorAnio && filtrarPorMes && filtrarPorTipo;
   
-  }), {
+  })
+
+
+  view(Inputs.table(dataFiltered, {
     columns: [
       "id",
       "Cohorte",
@@ -180,7 +200,7 @@ Inputs.table(search.filter(d => {
     rows: 10,
     height: 500,
   
-})
+}))
 
 
 ```
