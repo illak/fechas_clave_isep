@@ -1,5 +1,7 @@
 ---
-i
+theme: [dashboard, light]
+title: "Inscripciones: Períodos y Propuestas"
+toc: false
 ---
 
 <div style="text-align: center;">
@@ -68,9 +70,6 @@ const dataConAnios = data.filter(d => {
 });
 ```
 
-<div class="grid grid-cols-2">
-
-<div>
 
 ```js
 
@@ -107,21 +106,35 @@ const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo 
 const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…", locale: "es"}));
 ```
 
-</div>
-<div class="grid grid-cols-3">
-  <div class="card grid-colspan-3"><h2>Cantidad total de propuestas</h2><h1>${d3.count(dataFiltered, (d) => d["id"])}</h1></div>
-  <div class="card"><h2>Acred. única</h2>
-    <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. única"), (d) => d["id"])}</h1>
+
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
+  <div class="card">
+    <h2>Cantidad total de propuestas</h2> 
+    <h1 style="font-size: 4em;">${d3.count(dataFiltered, (d) => d["id"])}</h1>
   </div>
-  <div class="card"><h2>Acred. múltiple estructurado</h2>
-    <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado"), (d) => d["id"])}</h1>
-  </div>
-  <div class="card"><h2>Carrera - Acred. múltiple estructurado flexible</h2>
-    <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible"), (d) => d["id"])}</h1>
+  
+  <div class="grid-colspan-3" style="display: flex; flex-direction: column;">
+    <!-- Texto centrado arriba -->
+    <div style="text-align: left; margin-bottom: 1px; font-weight: bold;">
+      De las cuales:
+    </div>
+    <div class="grid grid-cols-3" style="flex: 1;">
+      <div class="card">
+        <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. única"), (d) => d["id"])}</h1>
+        <h2>Acred. única</h2>
+      </div>
+      <div class="card">
+        <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado"), (d) => d["id"])}</h1>
+        <h2>Acred. múltiple estructurado</h2>
+      </div>
+      <div class="card">
+        <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible"), (d) => d["id"])}</h1>
+        <h2>Acred. múltiple estructurado flexible</h2>
+      </div>
+    </div>
   </div>
 </div>
 
-</div>
 
 
 ```js
@@ -247,5 +260,18 @@ const dataFiltered = search.filter(d => {
     font-weight: bold;
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
     margin: 0;
+  }
+
+
+  .rectangulo {
+      width: 100%; /* Extiende el rectángulo al ancho completo del contenedor */
+      background-color: #333; /* Fondo gris oscuro */
+      color: white; /* Texto blanco */
+      text-align: center; /* Centra el texto horizontalmente */
+      padding: 2px; /* Espaciado interno */
+      box-sizing: border-box; /* Incluye el padding en el ancho total */
+      font-size: 20px; /* Tamaño del texto */
+      margin-bottom: 10px; /* Espaciado entre los rectángulos */
+      border-radius: 10px; /* Esquinas redondeadas */
   }
 </style>

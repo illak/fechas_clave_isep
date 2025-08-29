@@ -109,9 +109,11 @@ const end = view(Inputs.date({label: "Hasta",  value: ultimoDiaAnio}));
 const tipos = dataConAnios.map(d => d["Criterio de carga"]);
 const tipos_a = Array.from(new Set(tipos)).filter(Boolean);
 
-const tipo = view(Inputs.select([null].concat(tipos_a), {label: "Tipo de propuesta (Acred. única y Acred. múltiple)"}));
+const tipo = view(Inputs.select([null].concat(tipos_a), {label: "Tipo de propuesta"}));
 
 const finaliza_check = view(Inputs.toggle({label: "Finaliza este año"}));
+
+const inicia_check = view(Inputs.toggle({label: "Inicia en el periodo seleccionado"}));
 
 ```
 
@@ -141,9 +143,40 @@ function wrapTextLink(x, w, href) {
 }
 ```
 
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
+  <div class="card">
+    <h2>Cantidad total de propuestas</h2> 
+    <h1 style="font-size: 4em;">${d3.count(dataFiltered, (d) => d["id"])}</h1>
+  </div>
+  
+  <div class="grid-colspan-3" style="display: flex; flex-direction: column;">
+    <!-- Texto centrado arriba -->
+    <div style="text-align: left; margin-bottom: 1px; font-weight: bold;">
+      De las cuales:
+    </div>
+    <div class="grid grid-cols-3" style="flex: 1;">
+      <div class="card">
+        <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. única"), (d) => d["id"])}</h1>
+        <h2>Acred. única</h2>
+      </div>
+      <div class="card">
+        <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado"), (d) => d["id"])}</h1>
+        <h2>Acred. múltiple estructurado</h2>
+      </div>
+      <div class="card">
+        <h1>${d3.count(dataFiltered.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible"), (d) => d["id"])}</h1>
+        <h2>Acred. múltiple estructurado flexible</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 ```js
 
-Inputs.table(dataConAnios.filter(d => {
+const dataFiltered = dataConAnios.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     //const filtrarPorAnio = anios ? d["anio"] === anios : true;
     //const filtrarPorMes = mes ? d["mes"] === mes : true;
@@ -153,14 +186,19 @@ Inputs.table(dataConAnios.filter(d => {
 
     const filtroPorTipo = tipo ? d["Criterio de carga"] === tipo : true;
 
+    const filtroInicio = inicia_check ? d["inicio_prop"] >= start && d["inicio_prop"] <= end : true;
+
+
 
     // Retornar solo las filas que cumplen con los filtros activos
     if(finaliza_check){
-      return finalizaEsteAnio && filtroPeriodo && filtroPorTipo;
+      return finalizaEsteAnio && filtroPeriodo && filtroPorTipo && filtroInicio;
     }
-    return  filtroPeriodo && filtroPorTipo;
+    return  filtroPeriodo && filtroPorTipo && filtroInicio;
   
-  }), {
+  })
+
+view(Inputs.table(dataFiltered, {
     columns: [
       "id",
       "Cohorte",
@@ -170,6 +208,8 @@ Inputs.table(dataConAnios.filter(d => {
     ],
     header: {
       "id": "Propuesta",
+      "inicio_prop": "Inicio de la propuesta",
+      "fin_prop": "Fin de la propuesta",
       //"propuesta: Tipo de inscripción": "Tipo de inscripción"
     },
     format: {
@@ -188,7 +228,7 @@ Inputs.table(dataConAnios.filter(d => {
     rows: 10,
     height: 400,
   
-})
+}))
 
 
 ```

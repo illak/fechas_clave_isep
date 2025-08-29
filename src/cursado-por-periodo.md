@@ -367,7 +367,7 @@ function getTotalesCapítal(ifds){
   });
 
 
-  return htl.html`<h4>Capital</h4>  <h1>${sumaTotal}</h1>`
+  return htl.html`<h1>${sumaTotal}</h1><h2>Capital</h2>`
 }
 
 function getTotalesInterior(ifds){
@@ -394,17 +394,17 @@ function getTotalesInterior(ifds){
   });
 
 
-  return htl.html`<h4>Interior</h4>  <h1>${sumaTotal}</h1>`
+  return htl.html`<h1>${sumaTotal}</h1><h2>Interior</h2>`
 }
 
 
 function getTotalesANA(ifds){
-    return htl.html`<h4>Total de aulas N/A</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1>`
+    return htl.html`<h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1><h2>Total de aulas N/A</h2>`
 }
 
 
 function getTotales(ifds){
-  return htl.html`<h4>Total de aulas</h4>  <h1>${d3.sum(ifds, (d) => +d["TOTAL DE AULAS"] + +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1>`
+  return htl.html`<h1 style="font-size: 2.2em;">${d3.sum(ifds, (d) => +d["TOTAL DE AULAS"] + +d["TOTAL DE AULAS NO ASOCIADAS"])}</h1><h2>Total de aulas</h2>`
 }
 
 function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
@@ -674,7 +674,7 @@ function drawGantt(data, {width} = {}) {
 
   /* Nueva clase collapsible-card */
   .collapsible-card {
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      /*box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
       transition: all 0.3s ease;
       overflow: hidden;
   }
