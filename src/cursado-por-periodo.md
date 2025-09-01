@@ -196,10 +196,13 @@ function wrapTextLink(x, w, href) {
 ```
 
 ```js
+
   const dataFiltered = dataConAnios.filter(d => {
 
+
+
     if(inicios_en_periodo){
-      const filtroPeriodo = d["inicio"] >= start && d["inicio"] <= end;
+      const filtroPeriodo = d["inicio"] >= start && d["inicio"] <= end && d["fecha_fin"] >= start;
       return filtroPeriodo;
     }
     

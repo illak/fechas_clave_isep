@@ -103,7 +103,12 @@ const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
 const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo de inscripción"}));
 
-const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…", locale: "es"}));
+const search = view(Inputs.search(dataConAnios, 
+    {
+      placeholder: "Buscar por palabra clave…", 
+      locale: "es",
+      format: d => d + " resultados"
+    }));
 ```
 
 

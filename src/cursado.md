@@ -109,7 +109,12 @@ const dataConAnios = data.filter(d => {
 ```
 
 ```js
-const search = view(Inputs.search(dataConAnios, {placeholder: "Buscar por palabra clave…"}));
+const search = view(Inputs.search(dataConAnios, 
+          {
+            placeholder: "Buscar por palabra clave…",
+            locale: "es",
+            format: d => d + " resultados"
+          }));
 ```
 
 ```js
@@ -152,20 +157,17 @@ let ciclo = view(Inputs.select([null].concat(ciclos_a), {label: "Ciclo", width: 
 
 ```
 
-
-<div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-
+<div class="grid grid-cols-2" style="margin-top: -25px">
   <div>
 
   ```js
-
   let propuestas_b = ciclo ? search.filter(d => d["Ciclo"] === ciclo).map(d => d["Propuesta"]) : propuestas_a;
 
   let propuesta = view(Inputs.select([null].concat(propuestas_b), {label: "Propuesta", width:600}));
   ```
 
   </div>
-  <div style="margin-left: 50px;">
+  <div>
 
   ```js
   let filtered = propuesta ? search.filter(d => {
@@ -264,7 +266,7 @@ Inputs.table(search.filter(d => {
     },
     layout: "auto",
     rows: 30,
-    height: 400,
+    height: 500,
     width: "auto",  
 })
 
@@ -304,7 +306,7 @@ d3.timeFormatDefaultLocale(localeES);
 ```js
 const parser = d3.timeParse("%d/%m/%Y");
 
-const uc_gantt_data = dataConAnios.filter(d => {
+const uc_gantt_data = search.filter(d => {
     // Filtrar dinámicamente según los valores de `anios` y `mes`
     /*const filtrarPorAnio = anios ? d["anio"] === anios : true;
     const filtrarPorMes = mes ? d["mes"] === mes : true;
@@ -499,4 +501,5 @@ function drawGantt(data, {width} = {}) {
     width: auto; 
     text-align: left; /* Esto podría ser útil si quisieras alinear los labels a la derecha dentro de un espacio fijo */
   }
+
 </style>
