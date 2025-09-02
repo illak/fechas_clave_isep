@@ -3,6 +3,66 @@ toc: false
 ---
 
 
+<!-- Load and transform the data -->
+
+```js
+//const data1 = FileAttachment("data/data.tsv").tsv({typed: true});
+
+async function getTsv(url) {
+  let names =[];
+  const spreadsheet = await d3.tsv(url).then(data => data.forEach(d => names.push(d))); // d3.tsv returns a Promise
+  return names;
+}
+
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRyV5lbkXamFX_ORebRftxAEBQ0Hf2ugn9Em9i2YA4iirsUD006yQaAEdpJOC02haDAG0iNyD_U-Wkp/pub?gid=1045081279&single=true&output=tsv"
+
+const data = await getTsv(url);
+
+```
+
+```js
+
+const d = new Date();
+let current_year = d.getFullYear();
+
+const dataConAnios = data.filter(d => {
+
+  const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
+  const acred_multi = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado";
+  const acred_multi_flex = d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible";
+
+  return acred_unica || acred_multi || acred_multi_flex;
+
+}).map(d => {
+  // Convertir la fecha de "Inicio de la propuesta" a un objeto Date
+  const fecha = d["Inicio de la propuesta"]
+    ? new Date(d["Inicio de la propuesta"].split("/").reverse().join("-"))
+    : null;
+
+  const fecha_fin = d["Fin de la propuesta"]
+    ? new Date(d["Fin de la propuesta"].split("/").reverse().join("-"))
+    : null;
+
+  const options = { month: "long" };
+
+  // Retornar una nueva fila con una columna adicional "año"
+  return {
+    ...d, // Mantener las columnas existentes
+    anio_inicio: fecha ? fecha.getFullYear() : null, // Agregar el año como una nueva clave
+    anio_fin: fecha_fin ? fecha_fin.getFullYear() : null,
+    mes: new Intl.DateTimeFormat("es-Es", options).format(fecha),
+    mes_idx: fecha ? fecha.getMonth() : null,
+    fecha_fin: fecha_fin,
+    finaliza_este_anio: fecha_fin === null ? "fecha fin sin definir!" :  fecha_fin.getFullYear() === current_year,
+    inicio_prop: new Date(d["Inicio de la propuesta"].split("/").reverse().join("-")),
+    fin_prop: new Date(d["Fin de la propuesta"].split("/").reverse().join("-"))
+  };
+});
+
+
+
+```
+
 <div style="text-align: center;">
   <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
 </div>
@@ -12,6 +72,69 @@ toc: false
   <h2>Próximamente en esta sección inicial irá un mini instructivo o similar!!</h2>
   <a href="https://observablehq.com/framework/getting-started">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
 </div>
+
+
+
+```js
+
+const d = new Date();
+const current_year = d.getFullYear();
+
+const propuestasActivas = dataConAnios.filter(d => {
+  return d["anio_inicio"] <= current_year && d["anio_fin"] >= current_year;
+})
+
+const numPropuestasActivas = d3.count(propuestasActivas, (d) => d["id"]);
+
+let subtitle = "De " + numPropuestasActivas + " propuestas activas en el año:";
+
+
+
+const survey = [
+  {question: "carreras de acreditación única", yes: d3.count(propuestasActivas.filter(d => d["Criterio de carga"] === "Carrera - Acred. única"), (d) => d["id"])},
+  {question: "carreras de acreditación múltiple estructurado", yes: d3.count(propuestasActivas.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado"), (d) => d["id"])},
+  {question: "carreras de acreditación múltiple estructurado flexible", yes: d3.count(propuestasActivas.filter(d => d["Criterio de carga"] === "Carrera - Acred. múltiple estructurado flexible"), (d) => d["id"])}
+]
+
+  // Define el orden personalizado de las categorías
+  const customOrder = [
+    "carreras de acreditación única",
+    "carreras de acreditación múltiple estructurado", 
+    "carreras de acreditación múltiple estructurado flexible"
+  ];
+
+function viz1(data, {width} = {}){
+  return Plot.plot({
+      axis: null,
+      label: null,
+      width,
+      height: 260,
+      marginTop: 20,
+      marginBottom: 90,
+      title: htl.html`Resumen de propuestas <b>activas</b> en el año en curso`,
+      subtitle: subtitle,
+      // Solo define el orden, sin mostrar etiquetas del eje
+      fx: {
+        domain: customOrder,
+        axis: null // Oculta las etiquetas del eje fx
+      },
+      marks: [
+        Plot.axisFx({lineWidth: 20, anchor: "bottom", dy: 30, 
+            fontSize: 16}),
+        Plot.waffleY({length: 1}, {y: numPropuestasActivas, fillOpacity: 0.4, rx: "100%"}),
+        Plot.waffleY(data, {fx: "question", y: "yes", rx: "100%", fill: "orange"}),
+        Plot.text(data, {fx: "question", text: (d) => (d.yes).toLocaleString("es-ES"), frameAnchor: "bottom", lineAnchor: "top", dy: 6, fill: "orange", fontSize: 24, fontWeight: "bold"})
+      ]
+    })
+}
+
+```
+
+<div class="card">
+  ${resize((width) => viz1(survey, {width}))}
+</div>
+
+
 
 <div class="grid grid-cols-2" style="grid-auto-rows: 504px;">
   <div class="card">${
@@ -71,6 +194,10 @@ Here are some ideas of things you could try…
     Visit <a href="https://github.com/observablehq/framework">Framework on GitHub</a> and give us a star. Or file an issue if you’ve found a bug!
   </div>
 </div>
+
+
+
+
 
 <style>
 
