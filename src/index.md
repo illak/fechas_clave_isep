@@ -71,7 +71,6 @@ const dataConAnios = data.filter(d => {
 <div class="hero">
   <h1>Fechas clave</h1>
   <h2>Próximamente en esta sección inicial irá un mini instructivo o similar!!</h2>
-  <a href="https://observablehq.com/framework/getting-started">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
 </div>
 
 
@@ -169,8 +168,9 @@ function viz2(dji, {width} = {}){
   console.log(d3.utcDays(start, end))
 
   return Plot.plot({
+    title: htl.html`<b>Calendario</b>: Cantidad de propuestas que inician`,
     width: 1152,
-    height: d3.utcYear.count(start, end) * 230,
+    height: d3.utcYear.count(start, end) * 256,
     axis: null,
     padding: 0,
     x: {
@@ -191,19 +191,20 @@ function viz2(dji, {width} = {}){
       reverse: true
     },
     color: {
-      range: ["#27ae60", "#e74c3c"],   // Verde suave → Rojo suave
+      range: ["#7fbab6", "#f9c0a2"],   // Verde suave → Rojo suave
       domain: [0, maxTotal],
       legend: true,
-      label: "Total de registros"
+      label: "Total de propuestas"
     },
     marks: [
+
       // Draw year labels, rounding down to draw a year even if the data doesn’t
       // start on January 1. Use y = -1 (i.e., above Sunday) to align the year
       // labels vertically with the month labels, and shift them left to align
       // them horizontally with the weekday labels.
       Plot.text(
         d3.utcYears(d3.utcYear(start), end),
-        calendar({text: d3.utcFormat("%Y"), frameAnchor: "right", x: 0, y: -1, dx: -20})
+        calendar({text: d3.utcFormat("%Y"), frameAnchor: "right", x: 0, y: -1, dx: -20, fontSize: 14, fontWeight: "600"})
       ),
 
       // Draw month labels at the start of each month, rounding down to draw a
@@ -219,7 +220,8 @@ function viz2(dji, {width} = {}){
             return meses[d.getUTCMonth()];
           }, 
           frameAnchor: "left", 
-          y: -1
+          y: -1,
+          fontSize: 16,
         })
       ),
 
@@ -228,7 +230,7 @@ function viz2(dji, {width} = {}){
       // definition we don’t have the previous day’s close.)
       Plot.cell(
         dji,
-        calendar({date: "Date", fill: "total"})
+        calendar({date: "Date", fill: "total", })
       ),
 
       // Draw a line delineating adjacent months. Since the y-domain above is
@@ -239,14 +241,14 @@ function viz2(dji, {width} = {}){
           .map((d) => d3.utcDay.offset(d, d.getUTCDay() === 0 ? 1
              : d.getUTCDay() === 6 ? 2
              : 0, 0)),
-        calendar({stroke: "white", strokeWidth: 3}) 
+        calendar({stroke: "lightgrey", strokeWidth: 3}) 
       ),
 
       // Lastly, draw the date for all days spanning the dataset, including
       // days for which there is no data.
       Plot.text(
         d3.utcDays(d3.utcDay.offset(start,-1), end),
-        calendar({text: d3.utcFormat("%-d")})
+        calendar({text: d3.utcFormat("%-d"), fontSize: 13,})
       )
     ]
   });
@@ -297,67 +299,6 @@ class MonthLine extends Plot.Mark {
 }
 ```
 
-<div class="grid grid-cols-2" style="grid-auto-rows: 504px;">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Your awesomeness over time 🚀",
-      subtitle: "Up and to the right!",
-      width,
-      y: {grid: true, label: "Awesomeness"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(aapl, {x: "Date", y: "Close", tip: true})
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "How big are penguins, anyway? 🐧",
-      width,
-      grid: true,
-      x: {label: "Body mass (g)"},
-      y: {label: "Flipper length (mm)"},
-      color: {legend: true},
-      marks: [
-        Plot.linearRegressionY(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species"}),
-        Plot.dot(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species", tip: true})
-      ]
-    }))
-  }</div>
-</div>
-
----
-
-## Next steps
-
-Here are some ideas of things you could try…
-
-<div class="grid grid-cols-4">
-  <div class="card">
-    Chart your own data using <a href="https://observablehq.com/framework/lib/plot"><code>Plot</code></a> and <a href="https://observablehq.com/framework/files"><code>FileAttachment</code></a>. Make it responsive using <a href="https://observablehq.com/framework/javascript#resize(render)"><code>resize</code></a>.
-  </div>
-  <div class="card">
-    Create a <a href="https://observablehq.com/framework/project-structure">new page</a> by adding a Markdown file (<code>whatever.md</code>) to the <code>src</code> folder.
-  </div>
-  <div class="card">
-    Add a drop-down menu using <a href="https://observablehq.com/framework/inputs/select"><code>Inputs.select</code></a> and use it to filter the data shown in a chart.
-  </div>
-  <div class="card">
-    Write a <a href="https://observablehq.com/framework/loaders">data loader</a> that queries a local database or API, generating a data snapshot on build.
-  </div>
-  <div class="card">
-    Import a <a href="https://observablehq.com/framework/imports">recommended library</a> from npm, such as <a href="https://observablehq.com/framework/lib/leaflet">Leaflet</a>, <a href="https://observablehq.com/framework/lib/dot">GraphViz</a>, <a href="https://observablehq.com/framework/lib/tex">TeX</a>, or <a href="https://observablehq.com/framework/lib/duckdb">DuckDB</a>.
-  </div>
-  <div class="card">
-    Ask for help, or share your work or ideas, on our <a href="https://github.com/observablehq/framework/discussions">GitHub discussions</a>.
-  </div>
-  <div class="card">
-    Visit <a href="https://github.com/observablehq/framework">Framework on GitHub</a> and give us a star. Or file an issue if you’ve found a bug!
-  </div>
-</div>
-
-
-
 
 
 <style>
@@ -379,7 +320,7 @@ Here are some ideas of things you could try…
   font-size: 14vw;
   font-weight: 900;
   line-height: 1;
-  background: linear-gradient(30deg, var(--theme-foreground-focus), currentColor);
+  background: linear-gradient(30deg, #7fbab6, #005e6a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -393,6 +334,11 @@ Here are some ideas of things you could try…
   font-weight: 500;
   line-height: 1.5;
   color: var(--theme-foreground-muted);
+}
+
+g[aria-label="y-axis tick label"] text {
+  font-size: 14px;
+  font-weight: 400; /* opcional, para que se vea más claro */
 }
 
 @media (min-width: 640px) {
