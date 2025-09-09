@@ -447,15 +447,15 @@ function viz3(data, {width} = {}){
 </div>
 
 
-
-<div>
+```js
+/*<div>
 La siguiente visualización presenta un mapa de calor temporal que revela los patrones de inicio de propuestas a lo largo de los años registrados. Cada celda representa un día específico, donde el color y la intensidad indican la <b>cantidad de propuestas</b> que comenzaron (o van a comenzar) su cursada en esa fecha.
 </div>
 
 <div class="card">
   ${resize((width) => viz2(grouped, {width}))}
-</div>
-
+</div>*/
+```
 
 
 ```js
