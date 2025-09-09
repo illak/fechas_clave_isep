@@ -97,7 +97,7 @@ const unidadesCurriculares = data.filter(d => {
 ```
 
 <div style="text-align: center;">
-  <img src="./encabezado-fechas-clave.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
+  <img src="./encabezado-fechas-clave-front.png" alt="Banner Alt Text" style="width: 100%; height: auto; border-radius: 10px;">
 </div>
 
 <div class="hero">
@@ -430,7 +430,7 @@ function viz3(data, {width} = {}){
         y: "cantidad",
         text: "cantidad",
         dy: -8,
-        fontSize: 12,
+        fontSize: 15,
         fontWeight: "bold",
         fill: "#374151"
       }),
