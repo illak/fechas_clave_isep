@@ -105,7 +105,9 @@ const unidadesCurriculares = data.filter(d => {
 </div>
 <div>
 Este es el espacio institucional en el que se ponen a disposición todas las propuestas formativas vigentes. Podrán consultar, en las diferentes pestañas que se ponen a disposición, diferentes dimensiones de la implementación de las carreras y cursos, como las prematriculaciones, las fechas, los tipos de cursado, los cupos, la distribución de aulas por IFD, entre otros aspectos. 
-Sobre consultas relativas a esta información o revisión de la información que está disponible, escribir a: 📨 <a href="mailto:organizaciondecursadas@isep-cba.edu.ar">organizaciondecursadas@isep-cba.edu.ar</a>
+<br>
+<br>
+Sobre consultas relativas a esta información o revisión de la información que está disponible, escribir a: <a href="mailto:organizaciondecursadas@isep-cba.edu.ar"> organizaciondecursadas@isep-cba.edu.ar</a> 📨
 </div>
 
 
@@ -383,11 +385,11 @@ function viz3(data, {width} = {}){
 
   // Alternativa con estilo más personalizado:
   return Plot.plot({
-    title: "Distribución de Unidades Curriculares que inician cursada por mes",
+    title: htl.html`Distribución de <b>Unidades Curriculares</b> que inician cursada por mes`,
     width,
     height: 450,
     marginLeft: 70,
-    marginBottom: 90,
+    marginBottom: 98,
     marginTop:70,
     style: {
       backgroundColor: "#fafafa",
@@ -411,8 +413,8 @@ function viz3(data, {width} = {}){
       Plot.barY(datosGrafico, {
         x: "mes",
         y: "cantidad",
-        fill: d => d.cantidad > 0 ? "#2563eb" : "#e5e7eb",
-        stroke: "#1e40af",
+        fill: d => d.cantidad > 0 ? "#794654" : "#e5e7eb",
+        stroke: "black",
         strokeWidth: 1,
         rx: 2,
         tip: {
