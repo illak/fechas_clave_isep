@@ -166,9 +166,45 @@ const ultimoDiaAnio = new Date(hoy.getFullYear(), 11, 31); // Diciembre es el me
 const start = view(Inputs.date({label: "Desde", value: primerDiaAnio}));
 const end = view(Inputs.date({label: "Hasta",  value: ultimoDiaAnio}));
 
-const inicios_en_periodo = view(Inputs.toggle({label: "Sólo inicios de cursada en el periodo"}));
-
 ```
+
+
+<div class="grid grid-cols-2" style="margin-top: -25px">
+  <div>
+
+  ```js
+  let propuestas_b = Array.from(
+    new Set(dataConAnios.map(d => d["Propuesta"]).filter(Boolean))).sort();
+
+  let propuesta = view(Inputs.select([null].concat(propuestas_b), {label: "Propuesta", width:600}));
+  ```
+
+  </div>
+  <div>
+
+  ```js
+  let filtered = propuesta ? dataConAnios.filter(d => {
+      if(d["Propuesta"] === propuesta){
+        return true
+      }
+        return false }).map(d => d["Cohorte"]) : dataConAnios.map(d => d["Cohorte"]);
+
+
+  let cohortes_a = Array.from(new Set(filtered)).filter(Boolean);
+  let cohorte = view(Inputs.select([null].concat(cohortes_a), {label: "Cohorte"}));
+  ```
+
+  </div>
+</div>
+
+<div  style="margin-top: -25px">
+
+```js
+const inicios_en_periodo = view(Inputs.toggle({label: "Sólo inicios de cursada en el periodo"}));
+```
+</div>
+
+
 
 ```js
 function wrapText(x, w) {
@@ -210,7 +246,11 @@ function wrapTextLink(x, w, href) {
 
     // Retornar solo las filas que cumplen con los filtros activos
     //return filtrarPorAnio && filtrarPorMes && filtrarPorSemestre && filtrarPorPropuesta && filtrarPorEstado;
-    return filtroPeriodo;
+
+    const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+    const filtrarPorCohorte = cohorte ? d["Cohorte"] === cohorte : true;
+
+    return filtroPeriodo && filtrarPorPropuesta && filtrarPorCohorte;
   
   })
 ```
