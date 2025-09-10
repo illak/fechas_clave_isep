@@ -64,8 +64,9 @@ const dataConAnios = data.filter(d => {
 const unidadesCurriculares = data.filter(d => {
 
   const uc = d["Criterio de carga"] === "Unidad curricular";
+  const au = d["Criterio de carga"] === "Carrera - Acred. única";
 
-  return uc;
+  return uc || au;
 
 }).map(d => {
   // Convertir la fecha de "Inicio de la propuesta" a un objeto Date
@@ -90,7 +91,8 @@ const unidadesCurriculares = data.filter(d => {
     fecha_fin: fecha_fin,
     finaliza_este_anio: fecha_fin === null ? "fecha fin sin definir!" :  fecha_fin.getFullYear() === current_year,
     inicio_prop: new Date(d["Inicio de la propuesta"].split("/").reverse().join("-")),
-    fin_prop: new Date(d["Fin de la propuesta"].split("/").reverse().join("-"))
+    fin_prop: new Date(d["Fin de la propuesta"].split("/").reverse().join("-")),
+    categoria: d["Criterio de carga"] === "Unidad curricular" ? "Cat 1" : "Cat 2" 
   };
 });
 
@@ -110,6 +112,10 @@ Este es el espacio institucional en el que se ponen a disposición todas las pro
 Sobre consultas relativas a esta información o revisión de la información que está disponible, escribir a: <a href="mailto:organizaciondecursadas@isep-cba.edu.ar"> organizaciondecursadas@isep-cba.edu.ar</a> 📨
 </div>
 
+<div>
+<br>
+A continuación se muestran algunas visualizaciones que resumen información del año en curso:
+</div>
 
 ```js
 
@@ -308,34 +314,26 @@ const grouped = Array.from(groupedByDate, ([dateStr, total]) => ({Date: new Date
 
 ```js
 
+
+// Colores para las categorías
+const colores = {
+  'Unidad curricular': '#3B8B89',
+  'Carrera - Acred. única': '#E6D2B0'
+};
+
+const nombresCategoria = {
+  'Cat 1': 'Unidad curricular',
+  'Cat 2': 'Carrera - Acred. única'
+};
+
 const mesesCursada = unidadesCurriculares.filter(d => d["anio_inicio"] === current_year).map(d => ({
   mes: d["mes"],
   anio: d["anio_inicio"],
-  uc: d["Nombre del módulo"]
+  uc: d["Nombre del módulo"],
+  categoriaOriginal: d.categoria,
+  categoria: nombresCategoria[d.categoria] || d.categoria
 }));
 
-
-const datosOriginales = [
-  {mes: 'agosto', anio: 2024, uc: 'Módulo Introductorio'},
-  {mes: 'agosto', anio: 2024, uc: 'Principios de la política educativa en la modalidad de Educación Especial'},
-  {mes: 'octubre', anio: 2024, uc: 'El docente de apoyo a la inclusión en el entramado de la institución escolar'},
-  {mes: 'marzo', anio: 2025, uc: 'El sujeto en situación: figuras, discursos y prácticas en torno a la inclusión'},
-  {mes: 'mayo', anio: 2025, uc: 'El oficio del docente de apoyo a la inclusión. Construcción de una práctica pedagógica singular. '},
-  {mes: 'agosto', anio: 2025, uc: 'Seminario de Trabajo Final'},
-  {mes: 'agosto', anio: 2025, uc: 'Módulo Introductorio'},
-  {mes: 'octubre', anio: 2025, uc: 'Los sujetos adultos que interactúan con los niños …ones educativas de atención a la primera infancia'},
-  {mes: 'marzo', anio: 2026, uc: 'Repensar la enseñanza para la Educación Infantil en los escenarios actuales'},
-  {mes: 'mayo', anio: 2026, uc: 'Las propuestas didácticas en las salas del primer ciclo del nivel inicial'},
-  {mes: 'agosto', anio: 2026, uc: 'Las relaciones entre el juego y la enseñanza en Educación Inicial'},
-  {mes: 'octubre', anio: 2026, uc: 'Seminario de Trabajo Final '},
-  {mes: 'julio', anio: 2025, uc: 'Módulo introductorio'},
-  {mes: 'agosto', anio: 2025, uc: 'Organizaciones en la economía social y solidaria'},
-  {mes: 'septiembre', anio: 2025, uc: 'Políticas, culturas y prácticas de cooperación y mutualidad en el sistema educativo'},
-  {mes: 'noviembre', anio: 2025, uc: 'Organización y gestión de Cooperativas y Mutuales en las instituciones educativas'},
-  {mes: 'marzo', anio: 2026, uc: 'Diseño, gestión y evaluación de proyectos I'},
-  {mes: 'abril', anio: 2026, uc: 'Trabajo Final de Actualización Académica: Expedici…edagógica con práctica en Cooperativa y/o Mutual '},
-  {mes: 'abril', anio: 2025, uc: 'Módulo Introductorio'}
-];
 
 function viz3(data, {width} = {}){
 
@@ -357,51 +355,73 @@ function viz3(data, {width} = {}){
 
   // Procesar datos: contar UCs por mes
   function procesarDatos(datos) {
-    // Inicializar contadores para todos los meses
-    const contadorMeses = {};
-    Object.keys(ordenMeses).forEach(mes => {
-      contadorMeses[mes] = 0;
-    });
-    
-    // Contar las UCs por mes
-    datos.forEach(item => {
-      if (contadorMeses.hasOwnProperty(item.mes)) {
-        contadorMeses[item.mes]++;
-      }
-    });
-    
-    // Convertir a array y ordenar por mes
-    return Object.entries(contadorMeses)
-      .map(([mes, cantidad]) => ({
-        mes: mes,
-        cantidad: cantidad,
-        orden: ordenMeses[mes]
-      }))
-      .sort((a, b) => a.orden - b.orden);
+      // Inicializar contadores para todos los meses y categorías
+      const contadorMesesCategorias = {};
+      Object.keys(ordenMeses).forEach(mes => {
+        contadorMesesCategorias[`${mes}+Unidad curricular`] = 0;
+        contadorMesesCategorias[`${mes}+Carrera - Acred. única`] = 0;
+      });
+      
+      // Contar las UCs por mes y categoría
+      datos.forEach(item => {
+        const clave = `${item.mes}+${item.categoria}`;
+        if (contadorMesesCategorias.hasOwnProperty(clave)) {
+          contadorMesesCategorias[clave]++;
+        }
+      });
+      
+      // Convertir a array y ordenar por mes
+      return Object.entries(contadorMesesCategorias)
+        .map(([clave, cantidad]) => {
+          const [mes, categoria] = clave.split('+');
+          return {
+            mes: mes,
+            categoria: categoria,
+            cantidad: cantidad,
+            orden: ordenMeses[mes]
+          };
+        })
+        .sort((a, b) => a.orden - b.orden);
   }
 
   // Datos procesados
   const datosGrafico = procesarDatos(data);
 
+
+  // Calcular totales por mes para el texto
+  const totalesPorMes = datosGrafico.reduce((acc, item) => {
+    if (!acc[item.mes]) {
+      acc[item.mes] = { mes: item.mes, total: 0, orden: item.orden };
+    }
+    acc[item.mes].total += item.cantidad;
+    return acc;
+  }, {});
+
+  const datosTexto = Object.values(totalesPorMes).filter(d => d.total > 0);
+
   // Alternativa con estilo más personalizado:
   return Plot.plot({
-    title: htl.html`Distribución de <b>Unidades Curriculares</b> que inician cursada por mes`,
+    title: htl.html`Distribución de <b>Unidades Curriculares</b> y <b>Seminarios</b> (o cursos) que inician por mes en el año en curso`,
     width,
     height: 450,
-    marginLeft: 70,
+    marginLeft: 20,
     marginBottom: 98,
-    marginTop:70,
+    marginTop: 70,
     style: {
-      backgroundColor: "#fafafa",
+      //backgroundColor: "#fafafa",
       fontSize: "14px",
       fontFamily: "system-ui, sans-serif"
+    },
+    color: {
+      domain: ['Unidad curricular', 'Carrera - Acred. única'],
+      range: [colores['Unidad curricular'], colores['Carrera - Acred. única']],
+      legend: true
     },
     x: {
       domain: datosGrafico.map(d => d.mes),
       label: "Mes de inicio →",
       tickRotate: -45,
-      tickSize: 6,
-      tickFontSize: 18
+      tickSize: 6
     },
     y: {
       grid: false,
@@ -413,26 +433,28 @@ function viz3(data, {width} = {}){
       Plot.barY(datosGrafico, {
         x: "mes",
         y: "cantidad",
-        fill: d => d.cantidad > 0 ? "#794654" : "#e5e7eb",
-        stroke: "black",
-        strokeWidth: 1,
-        rx: 2,
+        fill: "categoria",
+        //stroke: "black",
+        //strokeWidth: .1,
+        //rx: 2,
         tip: {
           format: {
             x: true,
             y: true,
-            title: d => `${d.mes}: ${d.cantidad} UC${d.cantidad !== 1 ? 's' : ''}`
+            fill: true,
+            title: d => `${d.mes} - ${d.categoria}: ${d.cantidad} UC${d.cantidad !== 1 ? 's' : ''}`
           }
         }
       }),
-      Plot.text(datosGrafico.filter(d => d.cantidad > 0), {
+      Plot.text(datosTexto, {
         x: "mes",
-        y: "cantidad",
-        text: "cantidad",
-        dy: -8,
+        y: "total",
+        text: "total",
+        dy: -8,  // Ligeramente arriba de la barra
         fontSize: 15,
         fontWeight: "bold",
-        fill: "#374151"
+        fill: "#374151",
+        textAnchor: "middle"
       }),
       Plot.ruleY([0], {stroke: "#374151", strokeWidth: 2})
     ]
