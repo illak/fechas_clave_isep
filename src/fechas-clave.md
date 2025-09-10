@@ -211,8 +211,8 @@ const dataFiltered = search.filter(d => {
         return wrapTextLink(propuesta, 250, link)
 
       },
-      inicio: inicio => inicio.toLocaleDateString("es-AR"),
-      fin: fin => fin.toLocaleDateString("es-AR")
+      inicio: inicio => inicio.toLocaleDateString("es-AR", { timeZone: "UTC" }),
+      fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" })
     },
     layout: "auto",
     rows: 10,

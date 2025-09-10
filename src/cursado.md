@@ -261,8 +261,8 @@ Inputs.table(search.filter(d => {
 
         return wrapTextLink(uc, 250, "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=" + id)
       },
-      inicio: inicio => inicio.toLocaleDateString("es-AR"),
-      fin: fin => fin.toLocaleDateString("es-AR")
+      inicio: inicio => inicio.toLocaleDateString("es-AR", { timeZone: "UTC" }),
+      fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" })
     },
     layout: "auto",
     rows: 30,

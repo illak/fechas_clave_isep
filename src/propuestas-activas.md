@@ -221,8 +221,8 @@ view(Inputs.table(dataFiltered, {
         const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
         return wrapTextLink(propuesta, 290, link)
       },
-      inicio_prop: inicio_prop => inicio_prop.toLocaleDateString("es-AR"),
-      fin_prop: fin_prop => fin_prop.toLocaleDateString("es-AR")
+      inicio_prop: inicio_prop => inicio_prop.toLocaleDateString("es-AR", { timeZone: "UTC" }),
+      fin_prop: fin_prop => fin_prop.toLocaleDateString("es-AR", { timeZone: "UTC" })
     },
     layout: "auto",
     rows: 10,

@@ -238,8 +238,10 @@ function wrapTextLink(x, w, href) {
 
 
     if(inicios_en_periodo){
+      const filtrarPorPropuesta = propuesta ? d["Propuesta"] === propuesta : true;
+      const filtrarPorCohorte = cohorte ? d["Cohorte"] === cohorte : true;
       const filtroPeriodo = d["inicio"] >= start && d["inicio"] <= end && d["fecha_fin"] >= start;
-      return filtroPeriodo;
+      return filtroPeriodo && filtrarPorPropuesta && filtrarPorCohorte;
     }
     
     const filtroPeriodo = d["fecha_fin"] >= start && d["fecha_inicio"] <= end;
@@ -323,8 +325,8 @@ function wrapTextLink(x, w, href) {
 
           return wrapTextLink(uc, 250, pre_link + id)
         },
-        inicio: inicio => inicio.toLocaleDateString("es-AR"),
-        fin: fin => fin.toLocaleDateString("es-AR"),
+        inicio: inicio => inicio.toLocaleDateString("es-AR", { timeZone: "UTC" }),
+        fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" }),
         "Detalle del agrupamiento personalizado": (link) => link ? wrapTextLink("🔗Documento", 250, link) : ""
       },
       layout: "auto",
