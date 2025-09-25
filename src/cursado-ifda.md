@@ -377,7 +377,7 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
           return wrapTextLink(o.uc, 250, o.link)
         },
         prop_link: o => {
-          return wrapTextLink(o.prop, 250, o.link)
+          return o.prop
         },
         //"Inicio de cursado": (d) => wrapText(d),
         //"Cierre de cursado": (d) => wrapText(d),
