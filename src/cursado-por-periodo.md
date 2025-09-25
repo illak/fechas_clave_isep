@@ -201,7 +201,15 @@ const end = view(Inputs.date({label: "Hasta",  value: ultimoDiaAnio}));
 
 ```js
 const inicios_en_periodo = view(Inputs.toggle({label: "Sólo inicios de cursada en el periodo"}));
+
+const search = view(Inputs.search(dataConAnios, 
+    {
+      placeholder: "Buscar por palabra clave…", 
+      locale: "es",
+      format: d => d + " resultados"
+    }));
 ```
+
 </div>
 
 
@@ -233,7 +241,7 @@ function wrapTextLink(x, w, href) {
 
 ```js
 
-  const dataFiltered = dataConAnios.filter(d => {
+  const dataFiltered = search.filter(d => {
 
 
 
@@ -290,6 +298,7 @@ function wrapTextLink(x, w, href) {
         "id",
         "Criterio de carga",
         "Propuesta",
+        "Cohorte",
         "Apertura de aula",
         "inicio",
         "Cierre de actividades",

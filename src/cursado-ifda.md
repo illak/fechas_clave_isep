@@ -127,7 +127,15 @@ const dataConAnios = data.filter(d => {
     estado: status,
     tipo_ed: tipo_ed,
     inicio: fecha,
-    fin: fecha_f
+    fin: fecha_f,
+    uc_link: {
+      uc: d["Nombre del módulo"],
+      link: d["Criterio de carga"] === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id="+d["id"] : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="+d["id"]
+    },
+    prop_link: {
+      prop: d["Propuesta"],
+      link: "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id="+d["id"]
+    }
   };
 }).filter(d => d["estado"] === "Pendiente" || d["estado"] === "Cursando");
 
@@ -310,6 +318,21 @@ const filterIFDA = dataConAnios.filter(d => {
 
 ```
 
+```js
+
+function wrapTextLink(x, w, href) {
+  return htl.html`<a href=${href}
+      target=_blank
+      style=" display: block;
+      text-align: center;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      padding: 1px;
+      width: ${w}px;">${x.toLocaleString("en-US")}</a>`
+}
+```
+
 
 <div class="grid grid-cols-3">
   <div class="card grid-colspan-2">
@@ -331,11 +354,9 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
   }), {
     columns: [
       "id",
-      "Propuesta",
-      "Nombre del módulo",
+      "prop_link",
+      "uc_link",
       "Cohorte",
-      //"Inicio de cursado",
-      //"Cierre de cursado",
       "inicio",
       "fin",
       "TOTAL DE AULAS",
@@ -343,7 +364,8 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
     header: {
       "Nombre del módulo": "Cursado de",
       "Criterio de carga": "Tipología",
-      "Propuesta": "Propuesta formativa",
+      "prop_link": "Propuesta formativa",
+      "uc_link": "Nombre del módulo",
       "Momento en el que se ofrece": "Tipo de edición",
       "TOTAL DE AULAS": "# Aulas",
       "inicio": "Inicio de cursado",
@@ -351,7 +373,12 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
     },
     format: {
         "Propuesta": (d) => wrapText(d,250),
-        "Nombre del módulo": (d) => wrapText(d,150),
+        uc_link: o => {
+          return wrapTextLink(o.uc, 250, o.link)
+        },
+        prop_link: o => {
+          return wrapTextLink(o.prop, 250, o.link)
+        },
         //"Inicio de cursado": (d) => wrapText(d),
         //"Cierre de cursado": (d) => wrapText(d),
         "inicio": (d) => d.toLocaleDateString("es-AR", { timeZone: "UTC" }),

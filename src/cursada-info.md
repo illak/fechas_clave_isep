@@ -171,7 +171,7 @@ const link = cursada_data_id["Documento de la propuesta"];
       <div class="card"><b>Tipo de aula:</b> ${cursada_data_id["Tipo de aula"]}</div>
       <div class="card"><b>Tipo de aula adaptada:</b> ${cursada_data_id["Tipo de aula adaptada"]}</div>
       <div class="card"><b>Aula según inscripción en IFD:</b> ${cursada_data_id["Aula según inscripción en IFD"]}</div>
-      <div class="card"><b>Criterio de ordenamiento para aulas asociadas mixtas:</b> ${getLink("🔗 recurso", cursada_data_id["criterio_ord"])}</div>
+      <div class="card"><b>Criterio de ordenamiento para aulas asociadas mixtas:</b> ${cursada_data_id["criterio_ord"]}</div>
   </div>
 </div>
 
