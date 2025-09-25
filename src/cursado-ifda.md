@@ -354,7 +354,7 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
   }), {
     columns: [
       "id",
-      "prop_link",
+      "Propuesta",
       "uc_link",
       "Cohorte",
       "inicio",
@@ -364,7 +364,7 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
     header: {
       "Nombre del módulo": "Cursado de",
       "Criterio de carga": "Tipología",
-      "prop_link": "Propuesta formativa",
+      "Propuesta": "Propuesta formativa",
       "uc_link": "Nombre del módulo",
       "Momento en el que se ofrece": "Tipo de edición",
       "TOTAL DE AULAS": "# Aulas",
@@ -375,9 +375,6 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
         "Propuesta": (d) => wrapText(d,250),
         uc_link: o => {
           return wrapTextLink(o.uc, 250, o.link)
-        },
-        prop_link: o => {
-          return o.prop
         },
         //"Inicio de cursado": (d) => wrapText(d),
         //"Cierre de cursado": (d) => wrapText(d),
