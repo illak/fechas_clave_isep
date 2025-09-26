@@ -54,6 +54,7 @@ const ifdas_l = [
 const status_l = ["Pendiente", "Cursando"];
 const criterios_uc1 = ["Carrera - Acred. única", "Carrera - Acred. múltiple estructurado flexible"];
 const criterios_uc2 = ["Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
+const criterios_uc3 = ["Carrera - Acred. única", "Unidad curricular", "Carrera - Acred. múltiple estructurado flexible"];
 
 // Fecha actual
 const hoy = new Date();                 
@@ -130,7 +131,7 @@ const dataConAnios = data.filter(d => {
     fin: fecha_f,
     uc_link: {
       uc: d["Nombre del módulo"],
-      link: d["Criterio de carga"] === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id="+d["id"] : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="+d["id"]
+      link: "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="+d["id"]
     },
     prop_link: {
       prop: d["Propuesta"],
