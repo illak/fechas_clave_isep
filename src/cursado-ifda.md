@@ -193,6 +193,26 @@ const semestre = view(Inputs.select([null].concat(semestre_a), {label: "Semestre
 </div>
 
 
+```js
+  function toggleCard() {
+      const card = document.getElementById('infoCard');
+      card.classList.toggle('hidden');
+
+      const divTabla = document.getElementById('tabla');
+
+      if (divTabla.classList.contains('grid-colspan-3')) {
+        divTabla.classList.remove('grid-colspan-3');
+        divTabla.classList.add('grid-colspan-4');
+      } else {
+        divTabla.classList.remove('grid-colspan-4');
+        divTabla.classList.add('grid-colspan-3');
+      }
+  }
+
+  const ocultar_panel_izq = view(Inputs.button("Ocultar/visualizar panel derecho", {value: null, reduce: () => toggleCard()}))
+
+```
+
 
 ```js
 function centerText(x, ifda="-") {
@@ -335,8 +355,8 @@ function wrapTextLink(x, w, href) {
 ```
 
 
-<div class="grid grid-cols-3">
-  <div class="card grid-colspan-2">
+<div class="grid grid-cols-4" >
+  <div class="card grid-colspan-3" id="tabla">
 
 ```js
 const selects = view(Inputs.table(dataConAnios.filter(d => {
@@ -390,16 +410,16 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
 }))
 ```
   </div>
-  <div>
-      <h2>
-      Cantidades de aulas por IFDA
-      </h2>
+  <div class="collapsible-card" id="infoCard">
       <div class="grid grid-cols-4">
         <div class="card">${getTotalesCapítal(selects_l)}</div>
         <div class="card">${getTotalesInterior(selects_l)}</div>
         <div class="card">${getTotalesANA(selects_l)}</div>
         <div class="card">${getTotales(selects_l)}</div>
       </div>
+      <h2>
+      Cantidades de aulas por IFDA
+      </h2>
       <div class="rectangulo">
         Capital
       </div>
@@ -656,4 +676,35 @@ thead {
     display: grid;
     gap: 5px; /* Reduce el espacio entre las tarjetas */
 }
+
+
+ .toggle-btn {
+    --position: fixed;
+    right: 20px;
+    top: 250px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+  }
+
+  /* Nueva clase collapsible-card */
+  .collapsible-card {
+      /*box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+      transition: all 0.3s ease;
+      overflow: hidden;
+  }
+
+  .collapsible-card.hidden {
+      display: none;
+      width: 0;
+      padding: 0;
+      margin: 0;
+      opacity: 0;
+  }
+
 </style>
