@@ -1,6 +1,6 @@
 ---
 theme: [dashboard, light]
-title: "Inscripciones: Períodos y Propuestas"
+title: "Prematriculaciones: Períodos y Propuestas"
 toc: false
 ---
 
@@ -9,7 +9,7 @@ toc: false
 </div>
 
 <div class="hero">
-  <h1>Inscripciones: Períodos y Propuestas</h1>
+  <h1>Prematriculaciones: Períodos y Propuestas</h1>
   En esta sección, podrás consultar en qué períodos tuvimos prematriculaciones y para qué propuestas. Podés usar los filtros de año y mes -que corresponden a las fechas de inscripción (no de cursado)- o de tipo de inscripción. También tenés disponible el buscador por palabra clave para indagar los datos de prematriculación de una propuesta específica.
 </div>
 
@@ -101,7 +101,7 @@ const mes_a = Array.from(new Set(meses)).filter(Boolean) ;
 
 const mes = view(Inputs.select([null].concat(mes_a), {label: "Mes"}));
 
-const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo de inscripción"}));
+const tipo_insc = view(Inputs.select([null, "Abierta","Cerrada"], {label: "Tipo de prematriculación"}));
 
 const search = view(Inputs.search(dataConAnios, 
     {

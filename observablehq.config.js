@@ -10,7 +10,7 @@ export default {
      {
        name: "Secciones",
        pages: [
-         {name: "Inscripciones: Períodos y Propuestas", path: "/fechas-clave"},
+         {name: "Prematriculaciones: Períodos y Propuestas", path: "/fechas-clave"},
          {name: "Propuestas activas por período", path: "/propuestas-activas"},
          {name: "Cursado por propuesta formativa", path: "/cursado"},
          {name: "Cursado por período", path: "/cursado-por-periodo"},
