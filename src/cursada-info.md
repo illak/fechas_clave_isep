@@ -178,11 +178,9 @@ const link = cursada_data_id["Documento de la propuesta"];
 <br>
 <div class="card" style="background-color: white;">
   <h1>Fechas</h1>
-  <div class="grid grid-cols-4" style="text-align:center;">
-    <div class="card"><h1>📅 Apertura de aula</h1><h1>${cursada_data_id["Apertura de aula"]}</h1></div>
+  <div class="grid grid-cols-2" style="text-align:center;">
     <div class="card"><h1>📅 Inicio de cursado</h1><h1>${cursada_data_id["Inicio de cursado"]}</h1></div>
     <div class="card"><h1>📅 Cierre de actividades</h1><h1>${cursada_data_id["Cierre de actividades"]}</h1></div>
-    <div class="card"><h1>📅 Cierre de cursado</h1><h1>${cursada_data_id["Cierre de cursado"]}</h1></div>
   </div>
 </div>
 
