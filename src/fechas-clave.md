@@ -193,7 +193,9 @@ const dataFiltered = search.filter(d => {
       //"Inscripción: fin",
       "inicio",
       "fin",
-      "propuesta: Tipo de inscripción"
+      "propuesta: Tipo de inscripción",
+      "Cupo",
+      "Distribución de cupo"
     ],
     header: {
       "id": "Propuesta",
@@ -212,10 +214,11 @@ const dataFiltered = search.filter(d => {
 
       },
       inicio: inicio => inicio.toLocaleDateString("es-AR", { timeZone: "UTC" }),
-      fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" })
+      fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" }),
+      "Distribución de cupo": distr => wrapText(distr, 180)
     },
     layout: "auto",
-    rows: 10,
+    rows: 30,
     height: 500,
   
 }))
