@@ -66,8 +66,10 @@ const dataConAnios = data.filter(d => {
   const acred_unica = d["Criterio de carga"] === "Carrera - Acred. única";
   //const uc = d["Criterio de carga"] === "Unidad curricular";
   const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
+  const recursado = (d["Criterio de carga"] === "Recuperación de módulos" && d["Inicio de cursado"] !== "");
 
-  return acred_unica || uc;
+
+  return acred_unica || uc || recursado;
 
 }).filter(d => d["Inicio de cursado"] != "").map(d => {
   // Convertir la fecha de "Inicio de cursado" a un objeto Date
@@ -131,7 +133,7 @@ const dataConAnios = data.filter(d => {
     fin: fecha_f,
     uc_link: {
       uc: d["Nombre del módulo"],
-      link: "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="+d["id"]
+      link: d["Criterio de carga"] === "Recuperación de módulos" ? d["Documento de la propuesta"]:"https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="+d["id"]
     },
     prop_link: {
       prop: d["Propuesta"],

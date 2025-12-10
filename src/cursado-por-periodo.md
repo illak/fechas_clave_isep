@@ -56,8 +56,10 @@ const dataConAnios = data.filter(d => {
   const acred_unica = (d["Criterio de carga"] === "Carrera - Acred. única" && d["Inicio de la propuesta"] !== "");
   //const uc = (d["Criterio de carga"] === "Unidad curricular" && d["Inicio de cursado"] !== "");
   const uc = (criterios_uc2.includes(d["Criterio de carga"]) && d["Inicio de cursado"] !== "");
+  const recursado = (d["Criterio de carga"] === "Recuperación de módulos" && d["Inicio de cursado"] !== "")
 
-  return acred_unica || uc;
+
+  return acred_unica || uc || recursado;
 
 }).map(d => {
   // Convertir la fecha de "Inicio de cursado" a un objeto Date
@@ -323,8 +325,10 @@ function wrapTextLink(x, w, href) {
         "tipo_ed": (d) => wrapText(d, 150),
         //"id": (d) => wrapText(d,220),
         id: id => {
-        const uc = dataConAnios.filter(d => d.id===id)[0]["label"];
+          const uc = dataConAnios.filter(d => d.id===id)[0]["label"];
           const criterio = dataConAnios.filter(d => d.id===id)[0]["Criterio de carga"];
+          const doc_recuperacion = dataConAnios.filter(d => d.id===id)[0]["Documento de la propuesta"];
+
           //display(propuesta)
           //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
           //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
@@ -332,6 +336,10 @@ function wrapTextLink(x, w, href) {
           /*const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";*/
 
           const pre_link ="https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="
+
+          if(criterio == "Recuperación de módulos"){
+            return wrapTextLink(uc, 250, doc_recuperacion);
+          }
 
           return wrapTextLink(uc, 250, pre_link + id)
         },
