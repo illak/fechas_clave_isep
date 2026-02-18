@@ -191,6 +191,23 @@ const link = cursada_data_id["Documento de la propuesta"];
       <div class="card"><b>Asistencia mínima obligatoria:</b> <h1 id="cupo">${cursada_data_id["Asistencia mínima obligatoria"]}</h1></div>
       <div class="card"><b>A cargo del registro de asistencia:</b><br><br> ${cursada_data_id["A cargo del registro de asistencia"]}</div>
   </div>
+
+  <div class="grid grid-cols-3" style="text-align:center;grid-auto-rows: auto;">
+
+  <div class="grid grid-cols-1" style="text-align:center;grid-auto-rows: auto;">
+  <div class="card"><b>1° Encuentro:</b> <h1>${cursada_data_id["1° Encuentro"]}</h1></div>
+  <div class="card"><b>Recuperatorio (1°):</b> <h1>${cursada_data_id["Recuperatorio 1"]}</h1></div>
+  </div>
+  <div class="grid grid-cols-1" style="text-align:center;grid-auto-rows: auto;">
+  <div class="card"><b>2° Encuentro:</b> <h1>${cursada_data_id["2° Encuentro"]}</h1></div>
+  <div class="card"><b>Recuperatorio (2°):</b> <h1>${cursada_data_id["Recuperatorio 2"]}</h1></div>
+  </div>
+  <div class="grid grid-cols-1" style="text-align:center;grid-auto-rows: auto;">
+  <div class="card"><b>3° Encuentro:</b> <h1>${cursada_data_id["3° Encuentro"]}</h1></div>
+  <div class="card"><b>Recuperatorio (3°):</b> <h1>${cursada_data_id["Recuperatorio 3"]}</h1></div>
+  </div>
+  </div>
+
 </div>
 
 
