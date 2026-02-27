@@ -195,16 +195,16 @@ const link = cursada_data_id["Documento de la propuesta"];
   <div class="grid grid-cols-3" style="text-align:center;grid-auto-rows: auto;">
 
   <div class="grid grid-cols-1" style="text-align:center;grid-auto-rows: auto;">
-  <div class="card"><b>1° Encuentro:</b> <h1>${cursada_data_id["1° Encuentro"]}</h1></div>
-  <div class="card"><b>Recuperatorio (1°):</b> <h1>${cursada_data_id["Recuperatorio 1"]}</h1></div>
+  <div class="card"><b>1° Encuentro:</b> <h1>${cursada_data_id["Encuentro_1"]}</h1></div>
+  <div class="card"><b>Recuperatorio (1°):</b> <h1>${cursada_data_id["Recuperatorio_1"]}</h1></div>
   </div>
   <div class="grid grid-cols-1" style="text-align:center;grid-auto-rows: auto;">
-  <div class="card"><b>2° Encuentro:</b> <h1>${cursada_data_id["2° Encuentro"]}</h1></div>
-  <div class="card"><b>Recuperatorio (2°):</b> <h1>${cursada_data_id["Recuperatorio 2"]}</h1></div>
+  <div class="card"><b>2° Encuentro:</b> <h1>${cursada_data_id["Encuentro_2"]}</h1></div>
+  <div class="card"><b>Recuperatorio (2°):</b> <h1>${cursada_data_id["Recuperatorio_2"]}</h1></div>
   </div>
   <div class="grid grid-cols-1" style="text-align:center;grid-auto-rows: auto;">
-  <div class="card"><b>3° Encuentro:</b> <h1>${cursada_data_id["3° Encuentro"]}</h1></div>
-  <div class="card"><b>Recuperatorio (3°):</b> <h1>${cursada_data_id["Recuperatorio 3"]}</h1></div>
+  <div class="card"><b>3° Encuentro:</b> <h1>${cursada_data_id["Encuentro_3"]}</h1></div>
+  <div class="card"><b>Recuperatorio (3°):</b> <h1>${cursada_data_id["Recuperatorio_3"]}</h1></div>
   </div>
   </div>
 
