@@ -123,8 +123,9 @@ const linkres2 = propuesta_data["documento de resolución de implementación"];
 <br>
 <div class="card" style="background-color: white;">
   <h1>Información sobre el cupo</h1>
-  <div class="grid grid-cols-2" style="text-align:center;">
-    <div class="card"><h1>Cupo</h1><h1 id="cupo">${propuesta_data["Cupo"]}</h1></div>
+  <div class="grid grid-cols-3" style="text-align:center;">
+    <div class="card"><h1>Cupo inicial</h1><h1 id="cupo">${propuesta_data["Cupo inicial"]}</h1></div>
+    <div class="card"><h1>Cupo final</h1><h1 id="cupo">${propuesta_data["Cupo final"]}</h1></div>
     <div class="card"><h1>Distribución de cupo</h1><br><h3>${propuesta_data["Distribución de cupo"]}</h3></div>
   </div>
 </div>

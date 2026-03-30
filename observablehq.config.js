@@ -14,7 +14,8 @@ export default {
          {name: "Propuestas activas por período", path: "/propuestas-activas"},
          {name: "Cursado por propuesta formativa", path: "/cursado"},
          {name: "Cursado por período", path: "/cursado-por-periodo"},
-         {name: "Cursado IFDA", path: "/cursado-ifda"}
+         {name: "Cursado IFDA", path: "/cursado-ifda"},
+         {name: "Cursado por propuesta/cohorte", path: "/cursado-por-propuesta"}
        ]
      }
    ],
