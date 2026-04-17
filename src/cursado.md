@@ -240,7 +240,8 @@ Inputs.table(search.filter(d => {
       "Propuesta",
       "inicio",
       "fin",
-      "tipo_ed"
+      "tipo_ed",
+      "TOTAL DE AULAS"
     ],
     header: {
       "id": "Cursado de",
@@ -248,7 +249,8 @@ Inputs.table(search.filter(d => {
       "Propuesta": "Propuesta formativa",
       "inicio": "Inicio de cursado",
       "fin": "Cierre de cursado",
-      "tipo_ed": "Tipo de edición"
+      "tipo_ed": "Tipo de edición",
+      "TOTAL DE AULAS": "# Aulas"
     },
     format: {
       "Propuesta": (d) => wrapText(d, 220),
@@ -270,7 +272,10 @@ Inputs.table(search.filter(d => {
         return wrapTextLink(uc, 250, "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=" + id)
       },
       inicio: inicio => inicio.toLocaleDateString("es-AR", { timeZone: "UTC" }),
-      fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" })
+      fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" }),
+      "tipo_ed": (d) => wrapText(d,120),
+      "TOTAL DE AULAS": (d) =>  wrapText(d,50),
+
     },
     layout: "auto",
     rows: 30,

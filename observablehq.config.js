@@ -12,10 +12,9 @@ export default {
        pages: [
          {name: "Prematriculaciones: Períodos y Propuestas", path: "/fechas-clave"},
          {name: "Propuestas activas por período", path: "/propuestas-activas"},
+          {name: "Propuestas IFDA", path: "/cursado-ifda-v2"},
          {name: "Cursado por propuesta formativa", path: "/cursado"},
          {name: "Cursado por período", path: "/cursado-por-periodo"},
-         {name: "Cursado IFDA", path: "/cursado-ifda"},
-         {name: "Cursado por propuesta/cohorte", path: "/cursado-por-propuesta"}
        ]
      }
    ],
