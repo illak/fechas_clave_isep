@@ -189,7 +189,6 @@ const dataFiltered = dataConAnios.filter(d => {
     const filtroInicio = inicia_check ? d["inicio_prop"] >= start && d["inicio_prop"] <= end : true;
 
 
-
     // Retornar solo las filas que cumplen con los filtros activos
     if(finaliza_check){
       return finalizaEsteAnio && filtroPeriodo && filtroPorTipo && filtroInicio;
@@ -197,6 +196,7 @@ const dataFiltered = dataConAnios.filter(d => {
     return  filtroPeriodo && filtroPorTipo && filtroInicio;
   
   })
+
 
 view(Inputs.table(dataFiltered, {
     columns: [
@@ -225,7 +225,7 @@ view(Inputs.table(dataFiltered, {
       fin_prop: fin_prop => fin_prop.toLocaleDateString("es-AR", { timeZone: "UTC" })
     },
     layout: "auto",
-    rows: 10,
+    rows: 20,
     height: 400,
   
 }))
@@ -273,12 +273,14 @@ const propuestas_gantt_data = dataConAnios.filter(d => {
 
     const filtroPorTipo = tipo ? d["Criterio de carga"] === tipo : true;
 
+    const filtroInicio = inicia_check ? d["inicio_prop"] >= start && d["inicio_prop"] <= end : true;
+
 
     // Retornar solo las filas que cumplen con los filtros activos
     if(finaliza_check){
-      return finalizaEsteAnio && filtroPeriodo && filtroPorTipo;
+      return finalizaEsteAnio && filtroPeriodo && filtroPorTipo && filtroInicio;
     }
-    return  filtroPeriodo && filtroPorTipo;
+    return  filtroPeriodo && filtroPorTipo && filtroInicio;
 
 }).map(d => {
 
