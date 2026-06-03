@@ -51,7 +51,7 @@ const ifdas_l = [
   "Menéndez Pidal",
   "Zarela",
   "Perú",
-  "Maestros fundadores",
+  "Maestros Fundadores",
   "Velez Sarsfield",
   "Figueroa Alcorta",
   "Castagnino",
@@ -107,7 +107,7 @@ const dataConAnios = data.filter(d => {
     "Menéndez Pidal": parseInt(d["Menéndez Pidal"]),
     "Zarela": parseInt(d["Zarela"]),
     "Perú": parseInt(d["Perú"]),
-    "Maestros fundadores": parseInt(d["Maestros fundadores"]),
+    "Maestros Fundadores": parseInt(d["Maestros Fundadores"]),
     "Velez Sarsfield": parseInt(d["Velez Sarsfield"]),
     "Figueroa Alcorta": parseInt(d["Figueroa Alcorta"]),
     "Castagnino": parseInt(d["Castagnino"]),
@@ -451,7 +451,7 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
         ${getIFDAPanel("Menéndez Pidal", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Zarela", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Perú", selects_l, ifdas, num_selected)}
-        ${getIFDAPanel("Maestros fundadores", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Maestros Fundadores", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Velez Sarsfield", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Figueroa Alcorta", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Castagnino", selects_l, ifdas, num_selected)}

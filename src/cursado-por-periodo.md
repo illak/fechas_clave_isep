@@ -110,7 +110,14 @@ const dataConAnios = data.filter(d => {
     "San Martín": parseInt(d["San Martín"]),
     "Lefebvre": parseInt(d["Lefebvre"]),
     "Castro": parseInt(d["Castro"]),
-    "Menéndez Pidal": parseInt(d["Menéndez Pidal"])
+    "Menéndez Pidal": parseInt(d["Menéndez Pidal"]),
+    "Zarela": parseInt(d["Zarela"]),
+    "Perú": parseInt(d["Perú"]),
+    "Maestros Fundadores": parseInt(d["Maestros Fundadores"]),
+    "Velez Sarsfield": parseInt(d["Velez Sarsfield"]),
+    "Figueroa Alcorta": parseInt(d["Figueroa Alcorta"]),
+    "Castagnino": parseInt(d["Castagnino"]),
+    "Manuel Belgrano": parseInt(d["Manuel Belgrano"])
   }
   
   // Retornar una nueva fila con una columna adicional "año"
@@ -356,9 +363,7 @@ function wrapTextLink(x, w, href) {
 
   </div>
   <div class="collapsible-card" id="infoCard">
-      <div class="grid grid-cols-4">
-        <div class="card">${getTotalesCapítal(selects_l)}</div>
-        <div class="card">${getTotalesInterior(selects_l)}</div>
+      <div class="grid grid-cols-2">
         <div class="card">${getTotalesANA(selects_l)}</div>
         <div class="card">${getTotales(selects_l)}</div>
       </div>
@@ -390,6 +395,13 @@ function wrapTextLink(x, w, href) {
         ${getIFDAPanel("Lefebvre", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Castro", selects_l, ifdas, num_selected)}
         ${getIFDAPanel("Menéndez Pidal", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Zarela", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Perú", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Maestros Fundadores", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Velez Sarsfield", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Figueroa Alcorta", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Castagnino", selects_l, ifdas, num_selected)}
+        ${getIFDAPanel("Manuel Belgrano", selects_l, ifdas, num_selected)}
       </div>
     </div>
   </div>
@@ -471,13 +483,13 @@ function getTotales(ifds){
 }
 
 function getIFDAPanel(ifda, ifda_sel, ifdas,  num_selected){
-  if(ifdas===ifda || d3.sum(ifda_sel, (d) => d[ifda]) > 0){
+  if(ifdas===ifda || ifda_sel.some(d => d[ifda] === "TRUE")){
     return htl.html`<div class="card" style="background-color:#EDE4C5;">
-          <h4>${ifda}</h4>  ${d3.sum(ifda_sel, (d) => d[ifda])}
+          <h4>${ifda}</h4>
         </div>`
   }
   return htl.html`<div class="card">
-          <h2>${ifda}</h2>  ${d3.sum(ifda_sel, (d) => d[ifda])}
+          <h2>${ifda}</h2>
         </div>`
 }
 ```
