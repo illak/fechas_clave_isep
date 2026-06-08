@@ -342,7 +342,7 @@ function wrapTextLink(x, w, href) {
 
           /*const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";*/
 
-          const pre_link ="https://fechas-clave.isep-cba.edu.ar/fechas-clave/cursada-info?id="
+          const pre_link ="https://fechas-clave.isep-cba.edu.ar/cursada-info?id="
 
           if(criterio == "Recuperación de módulos"){
             return wrapTextLink(uc, 250, doc_recuperacion);

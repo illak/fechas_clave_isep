@@ -218,7 +218,7 @@ view(Inputs.table(dataFiltered, {
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        const link = "https://fechas-clave.isep-cba.edu.ar/fechas-clave/propuesta-info?id=" + id
+        const link = "https://fechas-clave.isep-cba.edu.ar/propuesta-info?id=" + id
         return wrapTextLink(propuesta, 290, link)
       },
       inicio_prop: inicio_prop => inicio_prop.toLocaleDateString("es-AR", { timeZone: "UTC" }),

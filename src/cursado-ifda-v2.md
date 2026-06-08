@@ -136,11 +136,11 @@ const dataConAnios = data.filter(d => {
     fin: fecha_f,
     uc_link: {
       uc: d["Nombre del módulo"],
-      link: d["Criterio de carga"] === "Recuperación de módulos" ? d["Documento de la propuesta"]:"https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="+d["id"]
+      link: d["Criterio de carga"] === "Recuperación de módulos" ? d["Documento de la propuesta"]:"https://fechas-clave.isep-cba.edu.ar/cursada-info?id="+d["id"]
     },
     prop_link: {
       prop: d["Propuesta"],
-      link: "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id="+d["id"]
+      link: "https://fechas-clave.isep-cba.edu.ar/propuesta-info?id="+d["id"]
     }
   };
 })
@@ -401,7 +401,7 @@ const selects = view(Inputs.table(dataConAnios.filter(d => {
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
+        const link = "https://fechas-clave.isep-cba.edu.ar/propuesta-info?id=" + id
         return wrapTextLink(propuesta, 290, link)
       },
         //"Inicio de cursado": (d) => wrapText(d),
