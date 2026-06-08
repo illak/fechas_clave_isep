@@ -1,3 +1,15 @@
+import { ProxyAgent, setGlobalDispatcher } from "undici";
+
+// Captura cualquiera de las variantes de la variable de entorno
+const proxyUrl = process.env.HTTPS_PROXY || process.env.https_proxy || process.env.HTTP_PROXY || process.env.http_proxy;
+
+if (proxyUrl) {
+  const proxyAgent = new ProxyAgent({ uri: proxyUrl });
+  setGlobalDispatcher(proxyAgent);
+  console.log(`[Proxy] Configurado globalmente hacia: ${proxyUrl}`);
+}
+// LO ANTERIOR ES PARA RESOLVER PROBLEMA DE PROXY!!
+
 // See https://observablehq.com/framework/config for documentation.
 export default {
   // The app’s title; used in the sidebar and webpage titles.

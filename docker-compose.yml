@@ -1,0 +1,7 @@
+services:
+  fechas-clave:
+    build: .
+    container_name: fechas_clave_isep
+    restart: unless-stopped
+    ports:
+      - "8093:3000" 
