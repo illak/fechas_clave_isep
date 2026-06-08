@@ -209,7 +209,7 @@ const dataFiltered = search.filter(d => {
         //display(propuesta)
         //return htl.html`<a href=http://127.0.0.1:3000/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=${id} target=_blank>${propuesta}</a>`
-        const link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" + id
+        const link = "https://fechas-clave.isep-cba.edu.ar/fechas-clave/propuesta-info?id=" + id
         return wrapTextLink(propuesta, 250, link)
 
       },

@@ -264,12 +264,12 @@ Inputs.table(search.filter(d => {
         //return htl.html`<a href=https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=${id} target=_blank>${uc}</a>`
         /*const pre_link = criterio === "Carrera - Acred. única" ? "https://illak-zapata-ws.observablehq.cloud/fechas-clave/propuesta-info?id=" : "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=";*/
 
-        const pre_link = "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id="
+        const pre_link = "https://fechas-clave.isep-cba.edu.ar/fechas-clave/cursada-info?id="
 
         if(criterio == "Recuperación de módulos"){
           return wrapTextLink(uc, 250, doc_recuperacion);
         }
-        return wrapTextLink(uc, 250, "https://illak-zapata-ws.observablehq.cloud/fechas-clave/cursada-info?id=" + id)
+        return wrapTextLink(uc, 250, "https://fechas-clave.isep-cba.edu.ar/fechas-clave/cursada-info?id=" + id)
       },
       inicio: inicio => inicio.toLocaleDateString("es-AR", { timeZone: "UTC" }),
       fin: fin => fin.toLocaleDateString("es-AR", { timeZone: "UTC" }),
