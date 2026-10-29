@@ -207,6 +207,8 @@ const link = cursada_data_id["Documento de la propuesta"];
   <div class="card"><b>Recuperatorio (3°):</b> ${cursada_data_id["Recuperatorio_3"]}</div>
   </div>
   </div>
+  <h1>Encuentros sincrónicos</h1>
+  <div class="card">${cursada_data_id["aclaraciones_encuentros"]}</div>
 
 </div>
 
